@@ -76,6 +76,13 @@ void Game::sEnemySpawner()
     }
 }
 
+void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 &mousePos)
+{
+    // TODO: Implement the spawning of a bullet which travels toward target
+    //       - bullet speed is given as scalar speed
+    //       - you must set the velocity by using formula in notes
+}
+
 void Game::sMovement()
 {
     // TODO: implement all entity movement in this function
