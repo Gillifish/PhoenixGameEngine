@@ -5,12 +5,18 @@
 
 struct PlayerConfig
 {
+    int SR, CR, FR, FG, FB, OR, OB, OT, V;
+    float S;
 };
 struct EnemyConfig
 {
+    int SR, CR, OR, OG, OT, VMIN, VMAX, L, SI;
+    float SMIN;
 };
 struct BulletConfig
 {
+    int SR, CR, FR, FG, FB, OR, OG, OB, OT, V, L;
+    float S;
 };
 
 class Game
@@ -26,6 +32,7 @@ class Game
     int m_currentFrame = 0;
     int m_lastEnemySpawnTime = 0;
     bool m_paused = false;
+    bool m_running = true;
 
     std::shared_ptr<Entity> m_player;
 
@@ -47,7 +54,6 @@ class Game
 
 public:
     Game(const std::string &config); // constructor, takes in game config file path
-    Game() = default;
 
     void run();
 };
