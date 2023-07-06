@@ -20,6 +20,7 @@ public:
     Vec2 operator * (const int i) const;
     Vec2 operator / (const Vec2& rhs) const;
     float dist(const Vec2& rhs) const;
+    float angle(const Vec2& rhs) const;
     void normalize();
     double length();
     void print();

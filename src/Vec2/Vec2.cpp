@@ -76,7 +76,15 @@ Vec2 Vec2::operator/(const Vec2 &rhs) const
 
 float Vec2::dist(const Vec2 &rhs) const
 {
-    return sqrt(pow(rhs.x - x, 2) + pow(rhs.y - y, 2));
+    return sqrtf(pow(rhs.x - x, 2) + pow(rhs.y - y, 2));
+}
+
+float Vec2::angle(const Vec2& rhs) const
+{
+    // Difference vector
+    Vec2 dv(rhs.x - x, rhs.y - y);
+    
+    return atan2f(dv.y, dv.x);
 }
 
 void Vec2::normalize()
