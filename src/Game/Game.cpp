@@ -45,18 +45,26 @@ void Game::spawnEnemy()
 {
     // TODO: make sure the enemy is spawned properly with the m_enemyConfig variables
     //      the enemy must be spawned completely within the bounds of the window
+    srand(time(NULL));
 
     auto entity = m_entities.addEntity("enemy");
 
-    float ex = rand() % m_window.getSize().x;
-    float ey = rand() % m_window.getSize().y;
+    float ex = getRandNum(0 + 16.0, m_window.getSize().x - 16.0);
+    float ey = getRandNum(0 + 16.0, m_window.getSize().y - 16.0);
 
     entity->cTransform = std::make_shared<CTransform>(Vec2(ex, ey), Vec2(0.0f, 0.0f), 0.0f);
 
-    entity->cShape = std::make_shared<CShape>(16.0f, 3, sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
+    entity->cShape = std::make_shared<CShape>(16.0f, getRandNum(3, 6), sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
 
     // record when the most recent enemy was spawned
     m_lastEnemySpawnTime = m_currentFrame;
+}
+
+float Game::getRandNum(int min, int max)
+{
+    srand(time(NULL));
+
+    return min + (rand() % (1 + max - min));
 }
 
 void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
@@ -81,6 +89,20 @@ void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 &mousePos)
     // TODO: Implement the spawning of a bullet which travels toward target
     //       - bullet speed is given as scalar speed
     //       - you must set the velocity by using formula in notes
+
+    auto bullet = m_entities.addEntity("bullet");
+
+    bullet->cShape = std::make_shared<CShape>(16.0f, 32, sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
+    bullet->CLifespan = std::make_shared<CLifespan>(60);
+
+    float bAngle = entity->cTransform->pos.angle(mousePos);
+    float bDistance = entity->cTransform->pos.dist(mousePos);
+    Vec2 bVelocity(bDistance * cos(bAngle), bDistance * sin(bAngle));
+
+    bVelocity.normalize();
+    bVelocity = bVelocity * 8;
+
+    bullet->cTransform = std::make_shared<CTransform>(Vec2(entity->cTransform->pos.x, entity->cTransform->pos.y), bVelocity, 0.0f);
 }
 
 void Game::sMovement()
@@ -111,8 +133,14 @@ void Game::sMovement()
         m_player->cTransform->velocity.x = 5;
     }
 
-    m_player->cTransform->pos.x += m_player->cTransform->velocity.x;
-    m_player->cTransform->pos.y += m_player->cTransform->velocity.y;
+    // m_player->cTransform->pos.x += m_player->cTransform->velocity.x;
+    // m_player->cTransform->pos.y += m_player->cTransform->velocity.y;
+
+    for (auto e : m_entities.getEntities())
+    {
+        e->cTransform->pos.x += e->cTransform->velocity.x;
+        e->cTransform->pos.y += e->cTransform->velocity.y;
+    }
 }
 
 void Game::sCollision()
@@ -176,6 +204,27 @@ void Game::sUserInput()
                 break;
             }
         }
+
+        if (event.type == sf::Event::MouseButtonPressed)
+        {
+            if (event.mouseButton.button == sf::Mouse::Left)
+            {
+                spawnBullet(m_player, Vec2(event.mouseButton.x, event.mouseButton.y));
+            }
+        }
+    }
+}
+
+void Game::sLifespan()
+{
+    for (auto e : m_entities.getEntities("bullet"))
+    {
+        e->CLifespan->remaining--;
+
+        if (e->CLifespan->remaining <= 0)
+        {
+            e->destroy();
+        }
     }
 }
 
@@ -209,6 +258,7 @@ void Game::run()
         m_entities.update();
 
         sEnemySpawner();
+        sLifespan();
         sMovement();
         sCollision();
         sUserInput();

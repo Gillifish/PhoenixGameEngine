@@ -20,7 +20,7 @@ void EntityManager::update()
 
     removeDeadEntities(m_entities);
 
-    for (auto& [tag, entityVec] : m_entityMap)
+    for (auto &[tag, entityVec] : m_entityMap)
     {
         removeDeadEntities(entityVec);
     }
@@ -28,10 +28,15 @@ void EntityManager::update()
 
 void EntityManager::removeDeadEntities(EntityVec &vec)
 {
-    for (auto e : vec)
-    {
-        auto s = std::remove_if(vec.begin(), vec.end(), [] (std::shared_ptr<Entity> e) { return e->isActive();  });
-    }
+    // ChatGPT saved my ass
+
+    vec.erase(
+        std::remove_if(vec.begin(), vec.end(),
+                       [&](std::shared_ptr<Entity> &e)
+                       {
+                           return !e->isActive();
+                       }),
+        vec.end());
 }
 
 const EntityVec &EntityManager::getEntities()

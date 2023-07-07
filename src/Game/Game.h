@@ -51,6 +51,7 @@ class Game
     void spawnSmallEnemies(std::shared_ptr<Entity> entity);
     void spawnBullet(std::shared_ptr<Entity> entity, const Vec2 &mousePos);
     void spawnSpecialWeapon(std::shared_ptr<Entity> entity);
+    float getRandNum(int min, int max);
 
 public:
     Game(const std::string &config); // constructor, takes in game config file path
