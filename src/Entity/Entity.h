@@ -20,7 +20,7 @@ public:
     std::shared_ptr<CCollision> cCollision;
     std::shared_ptr<CInput> cInput;
     std::shared_ptr<CScore> cScore;
-    std::shared_ptr<CLifespan> CLifespan;
+    std::shared_ptr<CLifespan> cLifespan;
     void destroy();
     const std::string &tag() const;
     const size_t id() const;

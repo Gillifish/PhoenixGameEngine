@@ -38,6 +38,7 @@ void Game::spawnPlayer()
     entity->cTransform = std::make_shared<CTransform>(Vec2(mx, my), Vec2(1.0f, 1.0f), 0.0f);
     entity->cShape = std::make_shared<CShape>(32.0f, 8, sf::Color(10, 10, 10), sf::Color(255, 0, 0), 4.0f);
     entity->cInput = std::make_shared<CInput>();
+    entity->cCollision = std::make_shared<CCollision>(32.0f);
     m_player = entity;
 }
 
@@ -55,6 +56,7 @@ void Game::spawnEnemy()
     entity->cTransform = std::make_shared<CTransform>(Vec2(ex, ey), Vec2(0.0f, 0.0f), 0.0f);
 
     entity->cShape = std::make_shared<CShape>(16.0f, getRandNum(3, 6), sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
+    entity->cCollision = std::make_shared<CCollision>(16.0f);
 
     // record when the most recent enemy was spawned
     m_lastEnemySpawnTime = m_currentFrame;
@@ -93,7 +95,8 @@ void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 &mousePos)
     auto bullet = m_entities.addEntity("bullet");
 
     bullet->cShape = std::make_shared<CShape>(16.0f, 32, sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
-    bullet->CLifespan = std::make_shared<CLifespan>(60);
+    bullet->cLifespan = std::make_shared<CLifespan>(60);
+    bullet->cCollision = std::make_shared<CCollision>(16.0f);
 
     float bAngle = entity->cTransform->pos.angle(mousePos);
     float bDistance = entity->cTransform->pos.dist(mousePos);
@@ -145,6 +148,60 @@ void Game::sMovement()
 
 void Game::sCollision()
 {
+    // Check for play area collision
+    for (auto e : m_entities.getEntities())
+    {
+        if (e->cTransform->pos.x < e->cCollision->radius)
+        {
+            e->cTransform->pos.x = e->cCollision->radius;
+        }
+
+        if (e->cTransform->pos.x > m_window.getSize().x - e->cCollision->radius)
+        {
+            e->cTransform->pos.x = m_window.getSize().x - e->cCollision->radius;
+        }
+
+        if (e->cTransform->pos.y < e->cCollision->radius)
+        {
+            e->cTransform->pos.y = e->cCollision->radius;
+        }
+
+        if (e->cTransform->pos.y > m_window.getSize().y - e->cCollision->radius)
+        {
+            e->cTransform->pos.y = m_window.getSize().y - e->cCollision->radius;
+        }
+    }
+
+    // Check for player-enemy collision
+    for (auto e : m_entities.getEntities("enemy"))
+    {
+        float dist = e->cTransform->pos.dist(m_player->cTransform->pos);
+
+        if (dist < e->cCollision->radius + m_player->cCollision->radius)
+        {
+            e->destroy();
+
+            float mx = m_window.getSize().x / 2.0f;
+            float my = m_window.getSize().y / 2.0f;
+
+            m_player->cTransform->pos = Vec2(mx, my);
+        }
+    }
+
+    // Check for bullet-enemy collision
+    for (auto b : m_entities.getEntities("bullet"))
+    {
+        for (auto e : m_entities.getEntities("enemy"))
+        {
+            float dist = b->cTransform->pos.dist(e->cTransform->pos);
+
+            if (dist < b->cCollision->radius + e->cCollision->radius)
+            {
+                b->destroy();
+                e->destroy();
+            }
+        }
+    }
 }
 
 void Game::sUserInput()
@@ -219,9 +276,9 @@ void Game::sLifespan()
 {
     for (auto e : m_entities.getEntities("bullet"))
     {
-        e->CLifespan->remaining--;
+        e->cLifespan->remaining--;
 
-        if (e->CLifespan->remaining <= 0)
+        if (e->cLifespan->remaining <= 0)
         {
             e->destroy();
         }
