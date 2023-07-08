@@ -1,9 +1,9 @@
 #include <iostream>
-#include "Game/Game.h"
+#include "Game/GeometryWars.h"
 
 int main(int argc, char *argv[])
 {
-    Game game("");
+    GeometryWars game("");
     game.run();
 
     return 0;

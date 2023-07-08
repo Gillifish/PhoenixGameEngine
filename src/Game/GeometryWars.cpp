@@ -1,13 +1,13 @@
-#include "Game.h"
+#include "GeometryWars.h"
 #include <iostream>
 #include <fstream>
 
-Game::Game(const std::string &config)
+GeometryWars::GeometryWars(const std::string &config)
 {
     init(config);
 }
 
-void Game::init(const std::string &path)
+void GeometryWars::init(const std::string &path)
 {
     // TODO: read in config file here
     //      use the premade PlayerConfig, EnemyConfig, BulletConfig variables
@@ -20,12 +20,12 @@ void Game::init(const std::string &path)
     spawnPlayer();
 }
 
-void Game::setPaused(bool paused)
+void GeometryWars::setPaused(bool paused)
 {
     m_paused = paused;
 }
 
-void Game::spawnPlayer()
+void GeometryWars::spawnPlayer()
 {
     // TODO: Finish adding all properties of the player with the correct values from the config
 
@@ -42,7 +42,7 @@ void Game::spawnPlayer()
     m_player = entity;
 }
 
-void Game::spawnEnemy()
+void GeometryWars::spawnEnemy()
 {
     // TODO: make sure the enemy is spawned properly with the m_enemyConfig variables
     //      the enemy must be spawned completely within the bounds of the window
@@ -62,18 +62,18 @@ void Game::spawnEnemy()
     m_lastEnemySpawnTime = m_currentFrame;
 }
 
-float Game::getRandNum(int min, int max)
+float GeometryWars::getRandNum(int min, int max)
 {
     srand(time(NULL));
 
     return min + (rand() % (1 + max - min));
 }
 
-void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
+void GeometryWars::spawnSmallEnemies(std::shared_ptr<Entity> e)
 {
 }
 
-void Game::sEnemySpawner()
+void GeometryWars::sEnemySpawner()
 {
     // TODO: code which implements enemy spawning should go here
     //
@@ -86,7 +86,7 @@ void Game::sEnemySpawner()
     }
 }
 
-void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 &mousePos)
+void GeometryWars::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 &mousePos)
 {
     // TODO: Implement the spawning of a bullet which travels toward target
     //       - bullet speed is given as scalar speed
@@ -108,7 +108,7 @@ void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 &mousePos)
     bullet->cTransform = std::make_shared<CTransform>(Vec2(entity->cTransform->pos.x, entity->cTransform->pos.y), bVelocity, 0.0f);
 }
 
-void Game::sMovement()
+void GeometryWars::sMovement()
 {
     // TODO: implement all entity movement in this function
     //      you should read the m_player->cInput component to determine if the player is moving
@@ -146,7 +146,7 @@ void Game::sMovement()
     }
 }
 
-void Game::sCollision()
+void GeometryWars::sCollision()
 {
     // Check for play area collision
     for (auto e : m_entities.getEntities())
@@ -204,7 +204,7 @@ void Game::sCollision()
     }
 }
 
-void Game::sUserInput()
+void GeometryWars::sUserInput()
 {
     // TODO: handle user input here
     //      not that you should only be setting the player's input component variables here
@@ -272,7 +272,7 @@ void Game::sUserInput()
     }
 }
 
-void Game::sLifespan()
+void GeometryWars::sLifespan()
 {
     for (auto e : m_entities.getEntities("bullet"))
     {
@@ -285,7 +285,7 @@ void Game::sLifespan()
     }
 }
 
-void Game::sRender()
+void GeometryWars::sRender()
 {
     // TODO: change the code below to draw ALL of the entities
     //      sample drawing of the player entity that we have created
@@ -308,7 +308,7 @@ void Game::sRender()
     m_window.display();
 }
 
-void Game::run()
+void GeometryWars::run()
 {
     while (m_running)
     {

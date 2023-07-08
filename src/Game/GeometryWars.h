@@ -19,7 +19,7 @@ struct BulletConfig
     float S;
 };
 
-class Game
+class GeometryWars
 {
     sf::RenderWindow m_window;
     EntityManager m_entities;
@@ -54,7 +54,7 @@ class Game
     float getRandNum(int min, int max);
 
 public:
-    Game(const std::string &config); // constructor, takes in game config file path
+    GeometryWars(const std::string &config); // constructor, takes in game config file path
 
     void run();
 };
