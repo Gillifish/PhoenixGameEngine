@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Entity/EntityManager.h"
+#include "Action.h"
 
 class Scene
 {
@@ -17,6 +18,6 @@ public:
     virtual void sRender() = 0;
 
     void simulate(int i);
-    void doAction(std::string action);
-    void registerAction(std::string action);
+    void doAction(Action action);
+    void registerAction(Action action);
 };
