@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec2/Vec2.h"
+#include "Animation/Animation.h"
 #include <SFML/Graphics.hpp>
 
 class Component
@@ -84,23 +85,35 @@ public:
 class CBoundingBox : public Component
 {
 public:
+    Vec2 size = { 0.0, 0.0 };
+    Vec2 halfSize = { 0.0, 0.0 };
     CBoundingBox() {}
+    CBoundingBox(const Vec2 &s)
+        : size(s), halfSize(s.x / 2, s.y / 2) {}
 };
 
 class CAnimation : public Component
 {
 public:
+    Animation animation;
+    bool repeat = false;
     CAnimation() {}
+    CAnimation(const Animation &animation, bool r)
+        : animation(animation), repeat(r) {}
 };
 
 class CGravity : public Component
 {
 public:
+    float gravity = 0;
     CGravity() {}
+    CGravity(float g) : gravity(g) {}
 };
 
 class CState : public Component
 {
 public:
+    std::string state = "jumping";
     CState() {}
+    CState(const std::string &s) : state(s) {}
 };

@@ -27,7 +27,7 @@ public:
     
     GameEngine(const std::string &path);
 
-    void changeScene(const std::string &sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene = false);
+    void changeScene(const std::string &sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene);
     void quit();
     void run();
 

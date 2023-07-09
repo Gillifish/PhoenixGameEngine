@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Animation/Animation.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
