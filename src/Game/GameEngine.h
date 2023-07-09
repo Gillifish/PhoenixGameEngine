@@ -1,26 +1,37 @@
 #include <iostream>
 
 #include "Assets.h"
-#include "Scene.h"
+#include "Scene/Scene.h"
 #include <SFML/Graphics.hpp>
+
+typedef std::map<std::string, std::shared_ptr<Scene>> SceneMap;
 
 class GameEngine
 {
-    std::map<std::string, Scene> scenes;
-    sf::RenderWindow window;
-    Assets assets;
-    std::string currentScene;
-    bool running;
+protected:
+    sf::RenderWindow m_window;
+    Assets m_assets;
+    std::string m_currentScene;
+    SceneMap m_sceneMap;
+    size_t m_simulationSpeed = 1;
+    bool m_running = true;
 
-    void init();
-    Scene *currentScene();
+    void init(const std::string &path);
+    void update();
+
+    void sUserInput();
+
+    std::shared_ptr<Scene> currentScene();
 
 public:
-    void run();
-    void update();
+    
+    GameEngine(const std::string &path);
+
+    void changeScene(const std::string &sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene = false);
     void quit();
-    void changeScene(Scene scene);
-    Assets &getAssets();
+    void run();
+
     sf::RenderWindow &window();
-    void sUserInput();
+    const Assets &assets() const;
+    bool isRunning();
 };

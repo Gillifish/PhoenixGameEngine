@@ -35,10 +35,10 @@ void GeometryWars::spawnPlayer()
     float mx = m_window.getSize().x / 2.0f;
     float my = m_window.getSize().y / 2.0f;
 
-    entity->cTransform = std::make_shared<CTransform>(Vec2(mx, my), Vec2(1.0f, 1.0f), 0.0f);
-    entity->cShape = std::make_shared<CShape>(32.0f, 8, sf::Color(10, 10, 10), sf::Color(255, 0, 0), 4.0f);
-    entity->cInput = std::make_shared<CInput>();
-    entity->cCollision = std::make_shared<CCollision>(32.0f);
+    entity->addComponent<CTransform>(Vec2(mx, my), Vec2(1.0f, 1.0f), 0.0f);
+    entity->addComponent<CShape>(32.0f, 8, sf::Color(10, 10, 10), sf::Color(255, 0, 0), 4.0f);
+    entity->addComponent<CInput>();
+    entity->addComponent<CCollision>(32.0f);
     m_player = entity;
 }
 
@@ -53,10 +53,10 @@ void GeometryWars::spawnEnemy()
     float ex = getRandNum(0 + 16.0, m_window.getSize().x - 16.0);
     float ey = getRandNum(0 + 16.0, m_window.getSize().y - 16.0);
 
-    entity->cTransform = std::make_shared<CTransform>(Vec2(ex, ey), Vec2(0.0f, 0.0f), 0.0f);
+    entity->addComponent<CTransform>(Vec2(ex, ey), Vec2(0.0f, 0.0f), 0.0f);
 
-    entity->cShape = std::make_shared<CShape>(16.0f, getRandNum(3, 6), sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
-    entity->cCollision = std::make_shared<CCollision>(16.0f);
+    entity->addComponent<CShape>(16.0f, getRandNum(3, 6), sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
+    entity->addComponent<CCollision>(16.0f);
 
     // record when the most recent enemy was spawned
     m_lastEnemySpawnTime = m_currentFrame;
@@ -94,18 +94,18 @@ void GeometryWars::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 &mouse
 
     auto bullet = m_entities.addEntity("bullet");
 
-    bullet->cShape = std::make_shared<CShape>(16.0f, 32, sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
-    bullet->cLifespan = std::make_shared<CLifespan>(60);
-    bullet->cCollision = std::make_shared<CCollision>(16.0f);
+    bullet->addComponent<CShape>(16.0f, 32, sf::Color(0, 0, 255), sf::Color(255, 255, 255), 4.0f);
+    bullet->addComponent<CLifespan>(60);
+    bullet->addComponent<CCollision>(16.0f);
 
-    float bAngle = entity->cTransform->pos.angle(mousePos);
-    float bDistance = entity->cTransform->pos.dist(mousePos);
+    float bAngle = entity->getComponent<CTransform>().pos.angle(mousePos);
+    float bDistance = entity->getComponent<CTransform>().pos.dist(mousePos);
     Vec2 bVelocity(bDistance * cos(bAngle), bDistance * sin(bAngle));
 
     bVelocity.normalize();
     bVelocity = bVelocity * 8;
 
-    bullet->cTransform = std::make_shared<CTransform>(Vec2(entity->cTransform->pos.x, entity->cTransform->pos.y), bVelocity, 0.0f);
+    bullet->addComponent<CTransform>(Vec2(entity->getComponent<CTransform>().pos.x, entity->getComponent<CTransform>().pos.y), bVelocity, 0.0f);
 }
 
 void GeometryWars::sMovement()
@@ -113,27 +113,27 @@ void GeometryWars::sMovement()
     // TODO: implement all entity movement in this function
     //      you should read the m_player->cInput component to determine if the player is moving
 
-    m_player->cTransform->velocity = {0, 0};
+    m_player->getComponent<CTransform>().velocity = {0.0, 0.0};
 
     // Implement player movement
-    if (m_player->cInput->up)
+    if (m_player->getComponent<CInput>().up)
     {
-        m_player->cTransform->velocity.y = -5;
+        m_player->getComponent<CTransform>().velocity.y = -5;
     }
 
-    if (m_player->cInput->down)
+    if (m_player->getComponent<CInput>().down)
     {
-        m_player->cTransform->velocity.y = 5;
+        m_player->getComponent<CTransform>().velocity.y = 5;
     }
 
-    if (m_player->cInput->left)
+    if (m_player->getComponent<CInput>().left)
     {
-        m_player->cTransform->velocity.x = -5;
+        m_player->getComponent<CTransform>().velocity.x = -5;
     }
 
-    if (m_player->cInput->right)
+    if (m_player->getComponent<CInput>().right)
     {
-        m_player->cTransform->velocity.x = 5;
+        m_player->getComponent<CTransform>().velocity.x = 5;
     }
 
     // m_player->cTransform->pos.x += m_player->cTransform->velocity.x;
@@ -141,8 +141,8 @@ void GeometryWars::sMovement()
 
     for (auto e : m_entities.getEntities())
     {
-        e->cTransform->pos.x += e->cTransform->velocity.x;
-        e->cTransform->pos.y += e->cTransform->velocity.y;
+        e->getComponent<CTransform>().pos.x += e->getComponent<CTransform>().velocity.x;
+        e->getComponent<CTransform>().pos.y += e->getComponent<CTransform>().velocity.y;
     }
 }
 
@@ -151,40 +151,40 @@ void GeometryWars::sCollision()
     // Check for play area collision
     for (auto e : m_entities.getEntities())
     {
-        if (e->cTransform->pos.x < e->cCollision->radius)
+        if (e->getComponent<CTransform>().pos.x < e->getComponent<CCollision>().radius)
         {
-            e->cTransform->pos.x = e->cCollision->radius;
+            e->getComponent<CTransform>().pos.x = e->getComponent<CCollision>().radius;
         }
 
-        if (e->cTransform->pos.x > m_window.getSize().x - e->cCollision->radius)
+        if (e->getComponent<CTransform>().pos.x > m_window.getSize().x - e->getComponent<CCollision>().radius)
         {
-            e->cTransform->pos.x = m_window.getSize().x - e->cCollision->radius;
+            e->getComponent<CTransform>().pos.x = m_window.getSize().x - e->getComponent<CCollision>().radius;
         }
 
-        if (e->cTransform->pos.y < e->cCollision->radius)
+        if (e->getComponent<CTransform>().pos.y < e->getComponent<CCollision>().radius)
         {
-            e->cTransform->pos.y = e->cCollision->radius;
+            e->getComponent<CTransform>().pos.y = e->getComponent<CCollision>().radius;
         }
 
-        if (e->cTransform->pos.y > m_window.getSize().y - e->cCollision->radius)
+        if (e->getComponent<CTransform>().pos.y > m_window.getSize().y - e->getComponent<CCollision>().radius)
         {
-            e->cTransform->pos.y = m_window.getSize().y - e->cCollision->radius;
+            e->getComponent<CTransform>().pos.y = m_window.getSize().y - e->getComponent<CCollision>().radius;
         }
     }
 
     // Check for player-enemy collision
     for (auto e : m_entities.getEntities("enemy"))
     {
-        float dist = e->cTransform->pos.dist(m_player->cTransform->pos);
+        float dist = e->getComponent<CTransform>().pos.dist(m_player->getComponent<CTransform>().pos);
 
-        if (dist < e->cCollision->radius + m_player->cCollision->radius)
+        if (dist < e->getComponent<CCollision>().radius + m_player->getComponent<CCollision>().radius)
         {
             e->destroy();
 
             float mx = m_window.getSize().x / 2.0f;
             float my = m_window.getSize().y / 2.0f;
 
-            m_player->cTransform->pos = Vec2(mx, my);
+            m_player->getComponent<CTransform>().pos = Vec2(mx, my);
         }
     }
 
@@ -193,9 +193,9 @@ void GeometryWars::sCollision()
     {
         for (auto e : m_entities.getEntities("enemy"))
         {
-            float dist = b->cTransform->pos.dist(e->cTransform->pos);
+            float dist = b->getComponent<CTransform>().pos.dist(e->getComponent<CTransform>().pos);
 
-            if (dist < b->cCollision->radius + e->cCollision->radius)
+            if (dist < b->getComponent<CCollision>().radius + e->getComponent<CCollision>().radius)
             {
                 b->destroy();
                 e->destroy();
@@ -225,16 +225,16 @@ void GeometryWars::sUserInput()
             switch (event.key.code)
             {
             case sf::Keyboard::W:
-                m_player->cInput->up = true;
+                m_player->getComponent<CInput>().up = true;
                 break;
             case sf::Keyboard::S:
-                m_player->cInput->down = true;
+                m_player->getComponent<CInput>().down = true;
                 break;
             case sf::Keyboard::A:
-                m_player->cInput->left = true;
+                m_player->getComponent<CInput>().left = true;
                 break;
             case sf::Keyboard::D:
-                m_player->cInput->right = true;
+                m_player->getComponent<CInput>().right = true;
                 break;
             default:
                 break;
@@ -246,16 +246,16 @@ void GeometryWars::sUserInput()
             switch (event.key.code)
             {
             case sf::Keyboard::W:
-                m_player->cInput->up = false;
+                m_player->getComponent<CInput>().up = false;
                 break;
             case sf::Keyboard::S:
-                m_player->cInput->down = false;
+                m_player->getComponent<CInput>().down = false;
                 break;
             case sf::Keyboard::A:
-                m_player->cInput->left = false;
+                m_player->getComponent<CInput>().left = false;
                 break;
             case sf::Keyboard::D:
-                m_player->cInput->right = false;
+                m_player->getComponent<CInput>().right = false;
                 break;
             default:
                 break;
@@ -276,9 +276,9 @@ void GeometryWars::sLifespan()
 {
     for (auto e : m_entities.getEntities("bullet"))
     {
-        e->cLifespan->remaining--;
+        e->getComponent<CLifespan>().remaining--;
 
-        if (e->cLifespan->remaining <= 0)
+        if (e->getComponent<CLifespan>().remaining <= 0)
         {
             e->destroy();
         }
@@ -293,16 +293,16 @@ void GeometryWars::sRender()
 
     for (auto e : m_entities.getEntities())
     {
-        e->cShape->circle.setPosition(e->cTransform->pos.x, e->cTransform->pos.y);
-        e->cTransform->angle += 1.0f;
-        e->cShape->circle.setRotation(e->cTransform->angle);
+        e->getComponent<CShape>().circle.setPosition(e->getComponent<CTransform>().pos.x, e->getComponent<CTransform>().pos.y);
+        e->getComponent<CTransform>().angle += 1.0f;
+        e->getComponent<CShape>().circle.setRotation(e->getComponent<CTransform>().angle);
     }
 
     // draw the entity's sf::CircleShape
 
     for (auto e : m_entities.getEntities())
     {
-        m_window.draw(e->cShape->circle);
+        m_window.draw(e->getComponent<CShape>().circle);
     }
 
     m_window.display();

@@ -2,7 +2,7 @@
 
 std::shared_ptr<Entity> EntityManager::addEntity(const std::string &tag)
 {
-    auto e = std::shared_ptr<Entity>(new Entity(tag, m_totalEntities++));
+    auto e = std::shared_ptr<Entity>(new Entity(m_totalEntities++, tag));
     m_toAdd.push_back(e);
 
     return e;
