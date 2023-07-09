@@ -1,4 +1,17 @@
 #include "Scene_Play.h"
+#include <iostream>
+
+Scene_Play::Scene_Play(GameEngine *gameEngine, const std::string &levelPath)
+    : Scene(gameEngine)
+    , m_levelPath(levelPath)
+{
+    init(m_levelPath);
+}
+
+void Scene_Play::init(const std::string &levelPath)
+{
+    
+}
 
 void Scene_Play::spawnPlayer()
 {

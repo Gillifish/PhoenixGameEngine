@@ -6,7 +6,7 @@ struct PlayerConfig
 
 class Scene_Play : public Scene
 {
-    std::string levelPath;
+    std::string m_levelPath;
     std::shared_ptr<Entity> m_player;
     PlayerConfig playerConfig;
 
