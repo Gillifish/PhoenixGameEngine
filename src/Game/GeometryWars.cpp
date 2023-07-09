@@ -136,9 +136,6 @@ void GeometryWars::sMovement()
         m_player->getComponent<CTransform>().velocity.x = 5;
     }
 
-    // m_player->cTransform->pos.x += m_player->cTransform->velocity.x;
-    // m_player->cTransform->pos.y += m_player->cTransform->velocity.y;
-
     for (auto e : m_entities.getEntities())
     {
         e->getComponent<CTransform>().pos.x += e->getComponent<CTransform>().velocity.x;

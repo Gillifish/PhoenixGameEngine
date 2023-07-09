@@ -13,5 +13,5 @@ public:
 
     const std::string &name() const;
     const std::string &type() const;
-    std::string toString() const;
+    std::string toString();
 };
