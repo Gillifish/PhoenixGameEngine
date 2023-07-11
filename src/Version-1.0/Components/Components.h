@@ -20,7 +20,7 @@ public:
     float angle = 0;
 
     CTransform() {}
-    CTransform(const Vec2 &p) {}
+    CTransform(const Vec2 &p) : pos(p) {}
     CTransform(const Vec2 &p, const Vec2 &v, float a)
         : pos(p), velocity(v), angle(a) {}
 };
