@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Assets.h"
-#include "Scene/Scene.h"
+#include "Engine/Scene/Scene.h"
 #include <SFML/Graphics.hpp>
 
 typedef std::map<std::string, std::shared_ptr<Scene>> SceneMap;

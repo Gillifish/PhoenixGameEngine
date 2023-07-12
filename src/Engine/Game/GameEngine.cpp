@@ -1,6 +1,5 @@
 #include "GameEngine.h"
 #include "Assets.h"
-#include "Scene/Scene_Play.h"
 
 #include <iostream>
 
@@ -62,6 +61,18 @@ void GameEngine::sUserInput()
         if(event.type == sf::Event::Closed)
         {
             quit();
+        }
+
+        if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
+        {
+            // if the current scene does not have an action associated with this key, skip the event
+            if (currentScene()->getActionMap().find(event.key.code) == currentScene()->getActionMap().end()) { continue; }
+
+            // determine start or end action by whether it was key press or release
+            const std::string actionType = (event.type == sf::Event::KeyPressed) ? "START" : "END";
+
+            // look up the action and send the action to the scene
+            currentScene()->doAction(Action(currentScene()->getActionMap().at(event.key.code), actionType));
         }
     }
 }

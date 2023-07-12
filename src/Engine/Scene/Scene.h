@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "Entity/EntityManager.h"
-#include "Action.h"
+#include "Engine/Entity/EntityManager.h"
+#include "Engine/Action/Action.h"
 
 class GameEngine;
 typedef std::map<int, std::string> ActionMap;

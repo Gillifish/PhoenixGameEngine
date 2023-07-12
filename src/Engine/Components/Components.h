@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Vec2/Vec2.h"
-#include "Animation/Animation.h"
+#include "Engine/Vec2/Vec2.h"
+#include "Engine/Animation/Animation.h"
 #include <SFML/Graphics.hpp>
 
 class Component
