@@ -24,9 +24,9 @@ std::shared_ptr<Scene> GameEngine::currentScene()
 }
 
 // TODO
-void changeScene(const std::string &sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene)
+void GameEngine::changeScene(const std::string &sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene)
 {
-
+    m_currentScene = sceneName;
 }
 
 bool GameEngine::isRunning()

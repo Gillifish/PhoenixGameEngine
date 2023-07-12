@@ -33,11 +33,8 @@ public:
     void sSimulate(const size_t frames);
     void registerAction(int inputKey, const std::string &actionName);
 
-    size_t width() const;
-    size_t height() const;
     size_t currentFrame() const;
 
     bool hasEnded() const;
     const ActionMap &getActionMap() const;
-    void drawLine(const Vec2 &p1, const Vec2 &p2);
 };
