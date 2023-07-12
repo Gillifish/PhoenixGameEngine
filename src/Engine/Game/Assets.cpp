@@ -1,5 +1,29 @@
 #include "Assets.h"
 
+void Assets::addTexture(std::string name, std::string path)
+{
+    sf::Texture tex;
+    if (!tex.loadFromFile(path))
+    {
+        std::cout << "Failed to load texture: " << path << std::endl;
+        return;
+    }
+
+    m_textures[name] = tex;
+}
+
+void Assets::addFont(std::string name, std::string path)
+{
+    sf::Font font;
+    if (!font.loadFromFile(path))
+    {
+        std::cout << "Failed to load font: " << path << std::endl;
+        return;
+    }
+
+    m_fonts[name] = font;
+}
+
 sf::Texture &Assets::getTexture(std::string name)
 {
     return m_textures[name];
