@@ -1,4 +1,7 @@
+#pragma once
+
 #include "Scene.h"
+#include "Engine/Game/GameEngine.h"
 
 struct PlayerConfig
 {
@@ -19,12 +22,13 @@ class Scene_Play : public Scene
     void sEnemySpawner();
     void sCollision();
     void sRender();
-    void sDoAction(Action action);
+    void sDoAction(const Action &action);
     void sDebug();
     void onEnd();
 
 public:
+    Scene_Play(GameEngine *gameEngine);
     Scene_Play(GameEngine *gameEngine, const std::string &levelPath);
-    Vec2 gridToMidPixel(float gridX, float gridY, std::shared_ptr<Entity> entity);
+    //Vec2 gridToMidPixel(float gridX, float gridY, std::shared_ptr<Entity> entity);
     void update();
 };

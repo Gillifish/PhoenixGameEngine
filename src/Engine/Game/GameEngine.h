@@ -1,7 +1,10 @@
+#pragma once
+
 #include <iostream>
 
 #include "Assets.h"
 #include "Engine/Scene/Scene.h"
+#include "Engine/Scene/Scene_Play.h"
 #include <SFML/Graphics.hpp>
 
 typedef std::map<std::string, std::shared_ptr<Scene>> SceneMap;
@@ -24,10 +27,9 @@ protected:
     std::shared_ptr<Scene> currentScene();
 
 public:
-    
     GameEngine(const std::string &path);
 
-    void changeScene(const std::string &sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene);
+    void changeScene(const std::string &sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene = false);
     void quit();
     void run();
 

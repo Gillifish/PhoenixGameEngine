@@ -1,5 +1,6 @@
 #include "GameEngine.h"
-#include "Assets.h"
+#include "Engine/Scene/Scene_Play.h"
+#include "TestGame.h"
 
 #include <iostream>
 
@@ -15,7 +16,7 @@ void GameEngine::init(const std::string &path)
     m_window.create(sf::VideoMode(1200, 768), "Definitaly Not Mario");
     m_window.setFramerateLimit(60);
 
-    //changeScene("MENU", std::make_shared<Scene_Play>(this), false);
+    changeScene("START", std::make_shared<TestGame>(this));
 }
 
 std::shared_ptr<Scene> GameEngine::currentScene()
@@ -26,6 +27,13 @@ std::shared_ptr<Scene> GameEngine::currentScene()
 // TODO
 void GameEngine::changeScene(const std::string &sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene)
 {
+    auto it = m_sceneMap.find(sceneName);
+
+    if (it == m_sceneMap.end())
+    {
+        m_sceneMap[sceneName] = scene;
+    }
+
     m_currentScene = sceneName;
 }
 
@@ -72,7 +80,7 @@ void GameEngine::sUserInput()
             const std::string actionType = (event.type == sf::Event::KeyPressed) ? "START" : "END";
 
             // look up the action and send the action to the scene
-            currentScene()->doAction(Action(currentScene()->getActionMap().at(event.key.code), actionType));
+            currentScene()->sDoAction(Action(currentScene()->getActionMap().at(event.key.code), actionType));
         }
     }
 }
