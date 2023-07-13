@@ -51,7 +51,9 @@ void GameEngine::run()
 {
     while (isRunning())
     {
+        m_window.clear();
         update();
+        m_window.display();
     }
 }
 

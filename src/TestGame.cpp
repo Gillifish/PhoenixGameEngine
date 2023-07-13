@@ -16,7 +16,9 @@ void TestGame::spawnPlayer()
 {
     std::cout << "player spawned" << std::endl;
     auto e = m_entityManager.addEntity("player");
-    e->addComponent<CTransform>().pos = Vec2(m_game->width(), m_game->height());
+    std::cout << m_game->width() / 2 << std::endl;
+    e->addComponent<CTransform>().pos = Vec2(m_game->width() / 2, m_game->height() / 2);
+    e->addComponent<CShape>(32.0f, 8, sf::Color(10, 10, 10), sf::Color(255, 0, 0), 4.0f);
 
     m_player = e;
 }
@@ -56,7 +58,11 @@ void TestGame::sAnimation()
 
 void TestGame::sRender()
 {
-
+    for (auto e : m_entityManager.getEntities("player"))
+    {
+        e->getComponent<CShape>().circle.setPosition(e->getComponent<CTransform>().pos.x, e->getComponent<CTransform>().pos.y);
+        m_game->window().draw(e->getComponent<CShape>().circle);
+    }
 }
 
 void TestGame::onEnd()
