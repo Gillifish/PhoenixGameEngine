@@ -24,6 +24,13 @@ void Assets::addFont(std::string name, std::string path)
     m_fonts[name] = font;
 }
 
+void Assets::addAnimation(std::string name, Animation anim)
+{
+    m_animations[name] = anim;
+}
+
+
+
 sf::Texture &Assets::getTexture(std::string name)
 {
     return m_textures[name];
