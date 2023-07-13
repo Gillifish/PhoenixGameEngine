@@ -18,6 +18,7 @@ protected:
     SceneMap m_sceneMap;
     size_t m_simulationSpeed = 1;
     bool m_running = true;
+    sf::Color m_background = {0, 0, 0};
 
     void init(const std::string &path);
     void update();
@@ -37,6 +38,7 @@ public:
     const size_t height() const;
 
     sf::RenderWindow &window();
-    const Assets &assets() const;
+    Assets &assets();
     bool isRunning();
+    void setBackground(sf::Color &color);
 };

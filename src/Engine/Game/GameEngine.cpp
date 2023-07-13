@@ -12,8 +12,9 @@ GameEngine::GameEngine(const std::string &path)
 void GameEngine::init(const std::string &path)
 {
     // TODO: m_assets.loadFromFile(path)
+    m_assets.addTexture("player", "/Users/gillifish/Desktop/trchar000.png");
 
-    m_window.create(sf::VideoMode(1200, 768), "Definitaly Not Mario");
+    m_window.create(sf::VideoMode(1200, 768), "Phoenix Engine");
     m_window.setFramerateLimit(60);
 
     changeScene("START", std::make_shared<TestGame>(this));
@@ -51,7 +52,7 @@ void GameEngine::run()
 {
     while (isRunning())
     {
-        m_window.clear();
+        m_window.clear(m_background);
         update();
         m_window.display();
     }
@@ -92,7 +93,7 @@ void GameEngine::quit()
     m_running = false;
 }
 
-const Assets &GameEngine::assets() const
+Assets &GameEngine::assets()
 {
     return m_assets;
 }
@@ -105,4 +106,9 @@ const size_t GameEngine::width() const
 const size_t GameEngine::height() const
 {
     return m_window.getSize().y;
+}
+
+void GameEngine::setBackground(sf::Color &color)
+{
+    m_background = color;
 }

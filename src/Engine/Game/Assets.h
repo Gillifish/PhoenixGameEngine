@@ -13,6 +13,8 @@ class Assets
     std::map<std::string, sf::Font> m_fonts;
 
 public:
+    void loadFromFile(std::string path);
+
     void addTexture(std::string name, std::string path);
     void addAnimation(std::string name, Animation anim);
     void addSound(std::string name, std::string path);

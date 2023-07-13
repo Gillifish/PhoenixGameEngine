@@ -1,5 +1,10 @@
 #include "Assets.h"
 
+void Assets::loadFromFile(std::string path)
+{
+
+}
+
 void Assets::addTexture(std::string name, std::string path)
 {
     sf::Texture tex;
@@ -28,7 +33,6 @@ void Assets::addAnimation(std::string name, Animation anim)
 {
     m_animations[name] = anim;
 }
-
 
 
 sf::Texture &Assets::getTexture(std::string name)
