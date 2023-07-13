@@ -77,7 +77,6 @@ public:
     bool left = false;
     bool right = false;
     bool down = false;
-    bool shoot = false;
 
     CInput() {}
 };
@@ -87,9 +86,19 @@ class CBoundingBox : public Component
 public:
     Vec2 size = { 0.0, 0.0 };
     Vec2 halfSize = { 0.0, 0.0 };
+    sf::RectangleShape rect;
+    bool active = false;
+
     CBoundingBox() {}
     CBoundingBox(const Vec2 &s)
-        : size(s), halfSize(s.x / 2, s.y / 2) {}
+        : size(s), halfSize(s.x / 2, s.y / 2) 
+        {
+            rect.setSize(sf::Vector2f(size.x, size.y));
+            rect.setOrigin(size.x / 2, size.y / 2);
+            rect.setFillColor(sf::Color::Transparent);
+            rect.setOutlineColor(sf::Color(255, 255, 255));
+            rect.setOutlineThickness(1);
+        }
 };
 
 class CAnimation : public Component
@@ -113,7 +122,7 @@ public:
 class CState : public Component
 {
 public:
-    std::string state = "jumping";
+    std::string state = "idle";
     CState() {}
     CState(const std::string &s) : state(s) {}
 };
@@ -132,5 +141,6 @@ public:
     {
         sprite.setTexture(texture);
         sprite.setTextureRect(rect);
+        sprite.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
     }
 };

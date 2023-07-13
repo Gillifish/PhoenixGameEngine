@@ -5,7 +5,6 @@
 #include "Engine/Game/GameEngine.h"
 #include <SFML/Graphics.hpp>
 
-
 // Class used for testing various functionality of the game engine
 class TestGame : public Scene
 {
