@@ -117,3 +117,20 @@ public:
     CState() {}
     CState(const std::string &s) : state(s) {}
 };
+
+class CSprite : public Component
+{
+public:
+    sf::Sprite sprite;
+
+    CSprite() {}
+    CSprite(sf::Texture &texture)
+    {
+        sprite.setTexture(texture);
+    }
+    CSprite(sf::Texture &texture, sf::IntRect rect)
+    {
+        sprite.setTexture(texture);
+        sprite.setTextureRect(rect);
+    }
+};

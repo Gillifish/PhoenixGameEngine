@@ -15,6 +15,10 @@ void TestGame::init()
 void TestGame::spawnPlayer()
 {
     std::cout << "player spawned" << std::endl;
+    auto e = m_entityManager.addEntity("player");
+    e->addComponent<CTransform>().pos = Vec2(m_game->width(), m_game->height());
+
+    m_player = e;
 }
 
 void TestGame::update()

@@ -2,6 +2,7 @@
 
 #include "Engine/Entity/EntityManager.h"
 #include "Engine/Scene/Scene.h"
+#include "Engine/Game/GameEngine.h"
 #include <SFML/Graphics.hpp>
 
 

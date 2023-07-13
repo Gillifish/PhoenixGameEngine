@@ -33,6 +33,9 @@ public:
     void quit();
     void run();
 
+    const size_t width() const;
+    const size_t height() const;
+
     sf::RenderWindow &window();
     const Assets &assets() const;
     bool isRunning();

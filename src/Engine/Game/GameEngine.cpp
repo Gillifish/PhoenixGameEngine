@@ -94,3 +94,13 @@ const Assets &GameEngine::assets() const
 {
     return m_assets;
 }
+
+const size_t GameEngine::width() const
+{
+    return m_window.getSize().x;
+}
+
+const size_t GameEngine::height() const
+{
+    return m_window.getSize().y;
+}
