@@ -4,11 +4,9 @@
 
 int main(int argc, char *argv[])
 {
-    GameEngine *engine = new GameEngine("");
+    std::unique_ptr<GameEngine> engine (new GameEngine(""));
 
     engine->run();
-
-    delete engine;
 
     return 0;
 }
