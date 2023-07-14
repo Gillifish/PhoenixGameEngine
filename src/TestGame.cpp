@@ -13,6 +13,7 @@ void TestGame::init()
     registerAction(sf::Keyboard::A, "LEFT");
     registerAction(sf::Keyboard::D, "RIGHT");
     registerAction(sf::Keyboard::G, "DEBUG");
+    
     spawnPlayer();
 }
 
