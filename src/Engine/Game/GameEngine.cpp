@@ -12,7 +12,9 @@ GameEngine::GameEngine(const std::string &path)
 void GameEngine::init(const std::string &path)
 {
     // TODO: m_assets.loadFromFile(path)
-    m_assets.addTexture("player", "/Users/gillifish/Desktop/trchar000.png");
+    m_assets.addTexture("player", "/Users/gillifish/Desktop/trchar000.png");;
+    m_assets.addAnimation("WALK_DOWN", Animation("WALK_DOWN", m_assets.getTexture("player"), 4, 4, 1, 10));
+    m_assets.addAnimation("IDLE_LEFT", Animation("WALK_LEFT", m_assets.getTexture("player"), 4, 4, 2, 10));
 
     m_window.create(sf::VideoMode(1200, 768), "Phoenix Engine");
     m_window.setFramerateLimit(60);

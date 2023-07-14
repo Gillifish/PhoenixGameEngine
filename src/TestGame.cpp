@@ -20,7 +20,8 @@ void TestGame::spawnPlayer()
 {
     auto e = m_entityManager.addEntity("player");
     e->addComponent<CTransform>().pos = Vec2(m_game->width() / 2, m_game->height() / 2);
-    e->addComponent<CSprite>(m_game->assets().getTexture("player"), sf::IntRect(0, 0, 32, 48));
+    e->addComponent<CState>("IDLE_DOWN");
+    e->addComponent<CAnimation>(m_game->assets().getAnimation("WALK_DOWN"), true);
     e->addComponent<CBoundingBox>(Vec2(32, 48));
 
     m_player = e;
@@ -49,22 +50,24 @@ void TestGame::sMovement()
     // Implement player movement
     if (m_player->getComponent<CInput>().up)
     {
-        m_player->getComponent<CTransform>().velocity.y = -5;
+        m_player->getComponent<CTransform>().velocity.y = -3;
     }
-
-    if (m_player->getComponent<CInput>().down)
+    else if (m_player->getComponent<CInput>().down)
     {
-        m_player->getComponent<CTransform>().velocity.y = 5;
+        m_player->getComponent<CTransform>().velocity.y = 3;
+        m_player->getComponent<CState>().state = "WALK_DOWN";
     }
-
-    if (m_player->getComponent<CInput>().left)
+    else if (m_player->getComponent<CInput>().left)
     {
-        m_player->getComponent<CTransform>().velocity.x = -5;
+        m_player->getComponent<CTransform>().velocity.x = -3;
     }
-
-    if (m_player->getComponent<CInput>().right)
+    else if (m_player->getComponent<CInput>().right)
     {
-        m_player->getComponent<CTransform>().velocity.x = 5;
+        m_player->getComponent<CTransform>().velocity.x = 3;
+    }
+    else if (m_player->getComponent<CTransform>().velocity == Vec2(0.0f, 0.0f))
+    {
+        m_player->getComponent<CState>().state = "IDLE_DOWN";
     }
 
     for (auto e : m_entityManager.getEntities())
@@ -84,21 +87,45 @@ void TestGame::sCollision()
 
 void TestGame::sAnimation()
 {
+    if (m_player->getComponent<CState>().state == "IDLE_DOWN" && m_player->getComponent<CAnimation>().animation.getName() == "WALK_DOWN")
+    {
+        m_player->addComponent<CAnimation>(m_game->assets().getAnimation("WALK_DOWN"));
+        m_player->getComponent<CAnimation>().repeat = false;
+    }
+
+    if (m_player->getComponent<CState>().state == "WALK_DOWN")
+    {
+        m_player->getComponent<CAnimation>().repeat = true;
+    }
+
+    if (m_player->getComponent<CAnimation>().repeat)
+    {
+        m_player->getComponent<CAnimation>().animation.update();
+    }
 }
 
 void TestGame::sRender()
 {
-    for (auto e : m_entityManager.getEntities("player"))
+    for (auto e : m_entityManager.getEntities())
     {
-        e->getComponent<CSprite>().sprite.setPosition(e->getComponent<CTransform>().pos.x, e->getComponent<CTransform>().pos.y);
-        e->getComponent<CBoundingBox>().rect.setPosition(e->getComponent<CTransform>().pos.x, e->getComponent<CTransform>().pos.y);
-        
-        if (e->getComponent<CBoundingBox>().active)
+        auto &transform = e->getComponent<CTransform>();
+
+        if (e->hasComponent<CAnimation>())
         {
-            m_game->window().draw(e->getComponent<CBoundingBox>().rect);
+            auto &animation = e->getComponent<CAnimation>().animation;
+            animation.getSprite().setRotation(transform.angle);
+            animation.getSprite().setPosition(transform.pos.x, transform.pos.y);
+            animation.getSprite().setScale(transform.scale.x, transform.scale.y);
+            m_game->window().draw(animation.getSprite());
         }
 
-        m_game->window().draw(e->getComponent<CSprite>().sprite);
+        if (e->hasComponent<CBoundingBox>() && e->getComponent<CBoundingBox>().active)
+        {
+            auto &bBox = e->getComponent<CBoundingBox>();
+            bBox.rect.setPosition(transform.pos.x, transform.pos.y);
+            m_game->window().draw(bBox.rect);
+
+        }
     }
 }
 
@@ -129,7 +156,8 @@ void TestGame::sDoAction(const Action &action)
         else if (action.name() == "RIGHT")
         {
             m_player->getComponent<CInput>().right = true;
-        } else if (action.name() == "DEBUG")
+        }
+        else if (action.name() == "DEBUG")
         {
             for (auto e : m_entityManager.getEntities())
             {
@@ -138,8 +166,9 @@ void TestGame::sDoAction(const Action &action)
                     if (e->getComponent<CBoundingBox>().active)
                     {
                         e->getComponent<CBoundingBox>().active = false;
-                    } else 
-                    {   
+                    }
+                    else
+                    {
                         e->getComponent<CBoundingBox>().active = true;
                     }
                 }

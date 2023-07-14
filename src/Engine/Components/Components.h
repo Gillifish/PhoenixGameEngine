@@ -107,6 +107,7 @@ public:
     Animation animation;
     bool repeat = false;
     CAnimation() {}
+    CAnimation(const Animation &animation) : animation(animation) {}
     CAnimation(const Animation &animation, bool r)
         : animation(animation), repeat(r) {}
 };
@@ -122,25 +123,7 @@ public:
 class CState : public Component
 {
 public:
-    std::string state = "idle";
+    std::string state = "none";
     CState() {}
     CState(const std::string &s) : state(s) {}
-};
-
-class CSprite : public Component
-{
-public:
-    sf::Sprite sprite;
-
-    CSprite() {}
-    CSprite(sf::Texture &texture)
-    {
-        sprite.setTexture(texture);
-    }
-    CSprite(sf::Texture &texture, sf::IntRect rect)
-    {
-        sprite.setTexture(texture);
-        sprite.setTextureRect(rect);
-        sprite.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
-    }
 };
