@@ -12,14 +12,14 @@ GameEngine::GameEngine(const std::string &path)
 void GameEngine::init(const std::string &path)
 {
     // TODO: m_assets.loadFromFile(path)
-    m_assets.addTexture("player_walk_up", "/Users/gillifish/Desktop/up.png");
-    m_assets.addTexture("player_idle_up", "/Users/gillifish/Desktop/idle_up.png");
-    m_assets.addTexture("player_walk_down", "/Users/gillifish/Desktop/down.png");
-    m_assets.addTexture("player_idle_down", "/Users/gillifish/Desktop/idle_down.png");
-    m_assets.addTexture("player_walk_left", "/Users/gillifish/Desktop/left.png");
-    m_assets.addTexture("player_idle_left", "/Users/gillifish/Desktop/idle_left.png");
-    m_assets.addTexture("player_walk_right", "/Users/gillifish/Desktop/right.png");
-    m_assets.addTexture("player_idle_right", "/Users/gillifish/Desktop/idle_right.png");
+    m_assets.addTexture("player_walk_up", "assets/up.png");
+    m_assets.addTexture("player_idle_up", "assets/idle_up.png");
+    m_assets.addTexture("player_walk_down", "assets/down.png");
+    m_assets.addTexture("player_idle_down", "assets/idle_down.png");
+    m_assets.addTexture("player_walk_left", "assets/left.png");
+    m_assets.addTexture("player_idle_left", "assets/idle_left.png");
+    m_assets.addTexture("player_walk_right", "assets/right.png");
+    m_assets.addTexture("player_idle_right", "assets/idle_right.png");
 
     m_assets.addAnimation("WALK_UP", Animation("WALK_UP", m_assets.getTexture("player_walk_up"), 4, 10));
     m_assets.addAnimation("IDLE_UP", Animation("IDLE_UP", m_assets.getTexture("player_idle_up"), 1, 10));

@@ -7,8 +7,9 @@ void Assets::loadFromFile(std::string path)
 
 void Assets::addTexture(std::string name, std::string path)
 {
+    std::filesystem::path currentDir = std::filesystem::current_path();
     sf::Texture tex;
-    if (!tex.loadFromFile(path))
+    if (!tex.loadFromFile(currentDir.string() + "/" + path))
     {
         std::cout << "Failed to load texture: " << path << std::endl;
         return;
