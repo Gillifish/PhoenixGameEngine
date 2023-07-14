@@ -12,9 +12,23 @@ GameEngine::GameEngine(const std::string &path)
 void GameEngine::init(const std::string &path)
 {
     // TODO: m_assets.loadFromFile(path)
-    m_assets.addTexture("player", "/Users/gillifish/Desktop/trchar000.png");;
-    m_assets.addAnimation("WALK_DOWN", Animation("WALK_DOWN", m_assets.getTexture("player"), 4, 4, 1, 10));
-    m_assets.addAnimation("IDLE_LEFT", Animation("WALK_LEFT", m_assets.getTexture("player"), 4, 4, 2, 10));
+    m_assets.addTexture("player_walk_up", "/Users/gillifish/Desktop/up.png");
+    m_assets.addTexture("player_idle_up", "/Users/gillifish/Desktop/idle_up.png");
+    m_assets.addTexture("player_walk_down", "/Users/gillifish/Desktop/down.png");
+    m_assets.addTexture("player_idle_down", "/Users/gillifish/Desktop/idle_down.png");
+    m_assets.addTexture("player_walk_left", "/Users/gillifish/Desktop/left.png");
+    m_assets.addTexture("player_idle_left", "/Users/gillifish/Desktop/idle_left.png");
+    m_assets.addTexture("player_walk_right", "/Users/gillifish/Desktop/right.png");
+    m_assets.addTexture("player_idle_right", "/Users/gillifish/Desktop/idle_right.png");
+
+    m_assets.addAnimation("WALK_UP", Animation("WALK_UP", m_assets.getTexture("player_walk_up"), 4, 10));
+    m_assets.addAnimation("IDLE_UP", Animation("IDLE_UP", m_assets.getTexture("player_idle_up"), 1, 10));
+    m_assets.addAnimation("WALK_DOWN", Animation("WALK_DOWN", m_assets.getTexture("player_walk_down"), 4, 10));
+    m_assets.addAnimation("IDLE_DOWN", Animation("IDLE_DOWN", m_assets.getTexture("player_idle_down"), 1, 10));
+    m_assets.addAnimation("WALK_LEFT", Animation("WALK_LEFT", m_assets.getTexture("player_walk_left"), 4, 10));
+    m_assets.addAnimation("IDLE_LEFT", Animation("IDLE_LEFT", m_assets.getTexture("player_idle_left"), 1, 10));
+    m_assets.addAnimation("WALK_RIGHT", Animation("WALK_RIGHT", m_assets.getTexture("player_walk_right"), 4, 10));
+    m_assets.addAnimation("IDLE_RIGHT", Animation("IDLE_RIGHT", m_assets.getTexture("player_idle_right"), 1, 10));
 
     m_window.create(sf::VideoMode(1200, 768), "Phoenix Engine");
     m_window.setFramerateLimit(60);

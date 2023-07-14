@@ -23,6 +23,8 @@ class TestGame : public Scene
     void sDebug();
     void onEnd();
 
+    Vec2 gridToMidPixel(float gridX, float gridY, std::shared_ptr<Entity> entity);
+
 public:
     TestGame(GameEngine *gameEngine);
     void update();

@@ -21,7 +21,7 @@ void TestGame::spawnPlayer()
     auto e = m_entityManager.addEntity("player");
     e->addComponent<CTransform>().pos = Vec2(m_game->width() / 2, m_game->height() / 2);
     e->addComponent<CState>("IDLE_DOWN");
-    e->addComponent<CAnimation>(m_game->assets().getAnimation("WALK_DOWN"), true);
+    e->addComponent<CAnimation>(m_game->assets().getAnimation("IDLE_DOWN"), true);
     e->addComponent<CBoundingBox>(Vec2(32, 48));
 
     m_player = e;
@@ -51,6 +51,7 @@ void TestGame::sMovement()
     if (m_player->getComponent<CInput>().up)
     {
         m_player->getComponent<CTransform>().velocity.y = -3;
+        m_player->getComponent<CState>().state = "WALK_UP";
     }
     else if (m_player->getComponent<CInput>().down)
     {
@@ -60,10 +61,12 @@ void TestGame::sMovement()
     else if (m_player->getComponent<CInput>().left)
     {
         m_player->getComponent<CTransform>().velocity.x = -3;
+        m_player->getComponent<CState>().state = "WALK_LEFT";
     }
     else if (m_player->getComponent<CInput>().right)
     {
         m_player->getComponent<CTransform>().velocity.x = 3;
+        m_player->getComponent<CState>().state = "WALK_RIGHT";
     }
     else if (m_player->getComponent<CTransform>().velocity == Vec2(0.0f, 0.0f))
     {
@@ -87,20 +90,34 @@ void TestGame::sCollision()
 
 void TestGame::sAnimation()
 {
-    if (m_player->getComponent<CState>().state == "IDLE_DOWN" && m_player->getComponent<CAnimation>().animation.getName() == "WALK_DOWN")
+    if (m_player->getComponent<CState>().state == "IDLE_DOWN" && m_player->getComponent<CAnimation>().animation.getName() != "IDLE_DOWN")
+    {
+        m_player->addComponent<CAnimation>(m_game->assets().getAnimation("IDLE_DOWN"));
+    }
+
+    if (m_player->getComponent<CState>().state == "WALK_UP" && m_player->getComponent<CAnimation>().animation.getName() != "WALK_UP")
+    {
+        m_player->addComponent<CAnimation>(m_game->assets().getAnimation("WALK_UP"));
+    }
+
+    if (m_player->getComponent<CState>().state == "WALK_DOWN" && m_player->getComponent<CAnimation>().animation.getName() != "WALK_DOWN")
     {
         m_player->addComponent<CAnimation>(m_game->assets().getAnimation("WALK_DOWN"));
-        m_player->getComponent<CAnimation>().repeat = false;
     }
 
-    if (m_player->getComponent<CState>().state == "WALK_DOWN")
+    if (m_player->getComponent<CState>().state == "WALK_LEFT" && m_player->getComponent<CAnimation>().animation.getName() != "WALK_LEFT")
     {
-        m_player->getComponent<CAnimation>().repeat = true;
+        m_player->addComponent<CAnimation>(m_game->assets().getAnimation("WALK_LEFT"));
     }
 
-    if (m_player->getComponent<CAnimation>().repeat)
+    if (m_player->getComponent<CState>().state == "WALK_RIGHT" && m_player->getComponent<CAnimation>().animation.getName() != "WALK_RIGHT")
     {
-        m_player->getComponent<CAnimation>().animation.update();
+        m_player->addComponent<CAnimation>(m_game->assets().getAnimation("WALK_RIGHT"));
+    }
+
+    for (auto e : m_entityManager.getEntities())
+    {
+        e->getComponent<CAnimation>().animation.update();
     }
 }
 
