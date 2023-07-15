@@ -1,0 +1,19 @@
+Texture      player_walk_up	assets/up.png
+Texture      player_idle_up	assets/idle_up.png
+Texture      player_walk_down	assets/down.png
+Texture      player_idle_down	assets/idle_down.png
+Texture      player_walk_left	assets/left.png
+Texture      player_idle_left	assets/idle_left.png
+Texture      player_walk_right	assets/right.png
+Texture      player_idle_right  assets/idle_right.png
+
+Font         8-BIT-OP           fonts/8bitOperatorPlus-Regular.ttf
+
+Animation    WALK_UP            player_walk_up      4   10
+Animation    IDLE_UP            player_idle_up      1   10
+Animation    WALK_DOWN          player_walk_down    4   10
+Animation    IDLE_DOWN          player_idle_down    1   10
+Animation    WALK_LEFT          player_walk_left    4   10
+Animation    IDLE_LEFT          player_idle_left    1   10
+Animation    WALK_RIGHT         player_walk_right   4   10
+Animation    IDLE_RIGHT         player_idle_right   1   10

@@ -1,0 +1,1 @@
+GameWindow   1200 		768                  PhoenixEngine 60
