@@ -9,13 +9,15 @@
 class TestGame : public Scene
 {
     std::shared_ptr<Entity> m_player;
-    sf::Music music;
+    sf::Music m_music;
+    sf::View m_camera;
 
     void init();
 
     void spawnPlayer();
     void sAnimation();
     void sMovement();
+    void sCamera();
     void sLifespan();
     void sEnemySpawner();
     void sCollision();

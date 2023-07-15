@@ -4,9 +4,9 @@ TestGame::TestGame(GameEngine *gameEngine)
     : Scene(gameEngine)
 {
     init();
-    if (!music.openFromFile("/Users/gillifish/Desktop/GitRepos/PhoenixGameEngine/sounds/littleroot_town.ogg"))
+    if (!m_music.openFromFile("/Users/gillifish/Desktop/GitRepos/PhoenixGameEngine/sounds/littleroot_town.ogg"))
             return; // error
-    music.play();
+    m_music.play();
 }
 
 void TestGame::init()
@@ -18,6 +18,12 @@ void TestGame::init()
     registerAction(sf::Keyboard::G, "DEBUG");
 
     spawnPlayer();
+
+    m_camera.setSize(sf::Vector2f(960.0, 640.0f));
+    m_camera.setCenter(m_player->getComponent<CTransform>().pos.x, m_player->getComponent<CTransform>().pos.x);
+    m_camera.zoom(0.8);
+
+    m_game->window().setView(m_camera);
 }
 
 void TestGame::spawnPlayer()
@@ -41,6 +47,7 @@ void TestGame::update()
     sLifespan();
     sCollision();
     sAnimation();
+    sCamera();
     sRender();
 }
 
@@ -82,6 +89,12 @@ void TestGame::sMovement()
         e->getComponent<CTransform>().pos.x += e->getComponent<CTransform>().velocity.x;
         e->getComponent<CTransform>().pos.y += e->getComponent<CTransform>().velocity.y;
     }
+}
+
+void TestGame::sCamera()
+{
+    auto pos = m_player->getComponent<CTransform>().pos;
+    m_camera.setCenter(sf::Vector2f(pos.x, pos.y));
 }
 
 void TestGame::sLifespan()
@@ -127,6 +140,8 @@ void TestGame::sAnimation()
 
 void TestGame::sRender()
 {
+    m_game->window().setView(m_camera);
+
     for (auto e : m_entityManager.getEntities())
     {
         auto &transform = e->getComponent<CTransform>();
@@ -145,7 +160,6 @@ void TestGame::sRender()
             auto &bBox = e->getComponent<CBoundingBox>();
             bBox.rect.setPosition(transform.pos.x, transform.pos.y);
             m_game->window().draw(bBox.rect);
-
         }
     }
 }
