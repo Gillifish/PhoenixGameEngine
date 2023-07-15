@@ -127,3 +127,23 @@ public:
     CState() {}
     CState(const std::string &s) : state(s) {}
 };
+
+class CText : public Component
+{
+public:
+    sf::Text text;
+    float width = 0.0f;
+    float height = 0.0f;
+
+    CText() {}
+    CText(const std::string &content, sf::Font &font, const sf::Color &fill, int size)
+    {
+        text.setString(content);
+        text.setFont(font);
+        text.setFillColor(fill);
+        text.setCharacterSize(size);
+
+        width = text.getLocalBounds().width;
+        height = text.getLocalBounds().height;
+    }
+};

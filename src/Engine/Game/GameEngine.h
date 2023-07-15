@@ -7,6 +7,14 @@
 #include "Engine/Scene/Scene_Play.h"
 #include <SFML/Graphics.hpp>
 
+struct GameConfig
+{
+    float width;
+    float height;
+    std::string windowName;
+    float frameLimit;
+};
+
 typedef std::map<std::string, std::shared_ptr<Scene>> SceneMap;
 
 class GameEngine

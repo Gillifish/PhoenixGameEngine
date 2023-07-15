@@ -3,3 +3,6 @@ compile.sh
 run.sh
 .vscode
 assets
+sounds
+fonts
+config

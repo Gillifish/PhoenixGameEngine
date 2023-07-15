@@ -1,6 +1,7 @@
 #include "GameEngine.h"
 #include "Engine/Scene/Scene_Play.h"
 #include "TestGame.h"
+#include "Intro.h"
 
 #include <iostream>
 
@@ -11,29 +12,12 @@ GameEngine::GameEngine(const std::string &path)
 
 void GameEngine::init(const std::string &path)
 {
-    // TODO: m_assets.loadFromFile(path)
-    m_assets.addTexture("player_walk_up", "assets/up.png");
-    m_assets.addTexture("player_idle_up", "assets/idle_up.png");
-    m_assets.addTexture("player_walk_down", "assets/down.png");
-    m_assets.addTexture("player_idle_down", "assets/idle_down.png");
-    m_assets.addTexture("player_walk_left", "assets/left.png");
-    m_assets.addTexture("player_idle_left", "assets/idle_left.png");
-    m_assets.addTexture("player_walk_right", "assets/right.png");
-    m_assets.addTexture("player_idle_right", "assets/idle_right.png");
-
-    m_assets.addAnimation("WALK_UP", Animation("WALK_UP", m_assets.getTexture("player_walk_up"), 4, 10));
-    m_assets.addAnimation("IDLE_UP", Animation("IDLE_UP", m_assets.getTexture("player_idle_up"), 1, 10));
-    m_assets.addAnimation("WALK_DOWN", Animation("WALK_DOWN", m_assets.getTexture("player_walk_down"), 4, 10));
-    m_assets.addAnimation("IDLE_DOWN", Animation("IDLE_DOWN", m_assets.getTexture("player_idle_down"), 1, 10));
-    m_assets.addAnimation("WALK_LEFT", Animation("WALK_LEFT", m_assets.getTexture("player_walk_left"), 4, 10));
-    m_assets.addAnimation("IDLE_LEFT", Animation("IDLE_LEFT", m_assets.getTexture("player_idle_left"), 1, 10));
-    m_assets.addAnimation("WALK_RIGHT", Animation("WALK_RIGHT", m_assets.getTexture("player_walk_right"), 4, 10));
-    m_assets.addAnimation("IDLE_RIGHT", Animation("IDLE_RIGHT", m_assets.getTexture("player_idle_right"), 1, 10));
+    m_assets.loadFromFile(path);
 
     m_window.create(sf::VideoMode(1200, 768), "Phoenix Engine");
     m_window.setFramerateLimit(60);
 
-    changeScene("START", std::make_shared<TestGame>(this));
+    changeScene("INTRO", std::make_shared<Intro>(this));
 }
 
 std::shared_ptr<Scene> GameEngine::currentScene()

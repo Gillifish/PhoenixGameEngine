@@ -2,7 +2,18 @@
 
 Entity::Entity(const size_t &id, const std::string &tag) : m_id(id), m_tag(tag)
 {
-    m_components = std::make_tuple(CTransform(), CLifespan(), CInput(), CBoundingBox(), CAnimation(), CGravity(), CState(), CShape(), CCollision());
+    m_components = std::make_tuple(
+        CTransform(),
+        CLifespan(),
+        CInput(),
+        CBoundingBox(),
+        CAnimation(),
+        CGravity(),
+        CState(),
+        CShape(),
+        CCollision(),
+        CText()
+    );
 }
 
 void Entity::destroy()

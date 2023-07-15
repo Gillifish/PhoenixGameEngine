@@ -4,7 +4,29 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include <fstream>
 #include <filesystem>
+#include <sstream>
+
+struct TextureConfig
+{
+    std::string name;
+    std::string path;
+};
+
+struct FontConfig
+{
+    std::string name;
+    std::string path;
+};
+
+struct AnimationConfig
+{
+    std::string name;
+    std::string texName; 
+    size_t frameCount;
+    size_t speed;
+};
 
 class Assets
 {

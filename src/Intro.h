@@ -5,15 +5,23 @@
 #include "Engine/Game/GameEngine.h"
 #include <SFML/Graphics.hpp>
 
-// Class used for testing various functionality of the game engine
-class TestGame : public Scene
+class Intro : public Scene
 {
-    std::shared_ptr<Entity> m_player;
+    std::shared_ptr<Entity> m_pge_text;
+    std::shared_ptr<Entity> m_ggs_text;
+    std::shared_ptr<Entity> m_enter_text;
+    
     sf::Music music;
+    bool showText1 = true;
+    bool showText2 = false;
+    bool showText3 = false;
+    bool next = false;
+
+    //int animationFrameCount = 0;
 
     void init();
+    void textSetup();
 
-    void spawnPlayer();
     void sAnimation();
     void sMovement();
     void sLifespan();
@@ -27,6 +35,6 @@ class TestGame : public Scene
     Vec2 gridToMidPixel(float gridX, float gridY, std::shared_ptr<Entity> entity);
 
 public:
-    TestGame(GameEngine *gameEngine);
+    Intro(GameEngine *gameEngine);
     void update();
 };

@@ -4,6 +4,9 @@ TestGame::TestGame(GameEngine *gameEngine)
     : Scene(gameEngine)
 {
     init();
+    if (!music.openFromFile("/Users/gillifish/Desktop/GitRepos/PhoenixGameEngine/sounds/littleroot_town.ogg"))
+            return; // error
+    music.play();
 }
 
 void TestGame::init()
@@ -13,7 +16,7 @@ void TestGame::init()
     registerAction(sf::Keyboard::A, "LEFT");
     registerAction(sf::Keyboard::D, "RIGHT");
     registerAction(sf::Keyboard::G, "DEBUG");
-    
+
     spawnPlayer();
 }
 
