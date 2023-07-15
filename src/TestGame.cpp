@@ -21,7 +21,7 @@ void TestGame::init()
 
     m_camera.setSize(sf::Vector2f(960.0, 640.0f));
     m_camera.setCenter(m_player->getComponent<CTransform>().pos.x, m_player->getComponent<CTransform>().pos.x);
-    m_camera.zoom(0.8);
+    m_camera.zoom(0.7);
 
     m_game->window().setView(m_camera);
 }
