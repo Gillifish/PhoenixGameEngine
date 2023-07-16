@@ -4,7 +4,7 @@ TestGame::TestGame(GameEngine *gameEngine)
     : Scene(gameEngine)
 {
     init();
-    
+
     if (!m_music.openFromFile("/Users/gillifish/Desktop/GitRepos/PhoenixGameEngine/sounds/littleroot_town.ogg"))
             return; // error
     m_music.play();
@@ -12,6 +12,9 @@ TestGame::TestGame(GameEngine *gameEngine)
 
 void TestGame::init()
 {
+    m_map.setTexture(m_game->assets().getTexture("test_map"));
+    m_map.setOrigin(m_map.getLocalBounds().width / 2, m_map.getLocalBounds().height / 2);
+
     registerAction(sf::Keyboard::W, "UP");
     registerAction(sf::Keyboard::S, "DOWN");
     registerAction(sf::Keyboard::A, "LEFT");
@@ -19,6 +22,8 @@ void TestGame::init()
     registerAction(sf::Keyboard::G, "DEBUG");
 
     spawnPlayer();
+
+    m_map.setPosition(m_player->getComponent<CTransform>().pos.x, m_player->getComponent<CTransform>().pos.y);
 
     m_camera.setSize(sf::Vector2f(960.0, 640.0f));
     m_camera.setCenter(m_player->getComponent<CTransform>().pos.x, m_player->getComponent<CTransform>().pos.x);
@@ -141,6 +146,8 @@ void TestGame::sAnimation()
 
 void TestGame::sRender()
 {
+    m_game->window().draw(m_map);
+
     m_game->window().setView(m_camera);
 
     for (auto e : m_entityManager.getEntities())

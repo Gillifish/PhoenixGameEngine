@@ -11,6 +11,7 @@ class TestGame : public Scene
     std::shared_ptr<Entity> m_player;
     sf::Music m_music;
     sf::View m_camera;
+    sf::Sprite m_map;
 
     void init();
 
@@ -27,6 +28,7 @@ class TestGame : public Scene
     void onEnd();
 
     Vec2 gridToMidPixel(float gridX, float gridY, std::shared_ptr<Entity> entity);
+    void renderMap();
 
 public:
     TestGame(GameEngine *gameEngine);

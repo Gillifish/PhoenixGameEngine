@@ -77,6 +77,7 @@ public:
     bool left = false;
     bool right = false;
     bool down = false;
+    bool isMoving = false;
 
     CInput() {}
 };
@@ -124,6 +125,8 @@ class CState : public Component
 {
 public:
     std::string state = "none";
+    std::string previousState = "none";
+
     CState() {}
     CState(const std::string &s) : state(s) {}
 };

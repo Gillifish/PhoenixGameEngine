@@ -1,11 +1,12 @@
-Texture      player_walk_up	assets/up.png
-Texture      player_idle_up	assets/idle_up.png
+Texture      player_walk_up	    assets/up.png
+Texture      player_idle_up	    assets/idle_up.png
 Texture      player_walk_down	assets/down.png
 Texture      player_idle_down	assets/idle_down.png
 Texture      player_walk_left	assets/left.png
 Texture      player_idle_left	assets/idle_left.png
 Texture      player_walk_right	assets/right.png
 Texture      player_idle_right  assets/idle_right.png
+Texture      test_map           maps/map.png
 
 Font         8-BIT-OP           fonts/8bitOperatorPlus-Regular.ttf
 
