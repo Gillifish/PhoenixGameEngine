@@ -4,6 +4,7 @@ TestGame::TestGame(GameEngine *gameEngine)
     : Scene(gameEngine)
 {
     init();
+    
     if (!m_music.openFromFile("/Users/gillifish/Desktop/GitRepos/PhoenixGameEngine/sounds/littleroot_town.ogg"))
             return; // error
     m_music.play();
