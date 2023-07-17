@@ -14,6 +14,7 @@ class CTransform : public Component
 {
 public:
     Vec2 pos = {0.0, 0.0};
+    Vec2 gridPos = {0, 0};
     Vec2 prevPos = {0.0, 0.0};
     Vec2 scale = {1.0, 1.0};
     Vec2 velocity = {0.0, 0.0};
@@ -149,4 +150,12 @@ public:
         width = text.getLocalBounds().width;
         height = text.getLocalBounds().height;
     }
+};
+
+class CSprite : public Component
+{
+public:
+    sf::Sprite sprite;
+
+    CSprite() {}
 };

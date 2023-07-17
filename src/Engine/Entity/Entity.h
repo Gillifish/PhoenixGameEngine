@@ -16,7 +16,8 @@ typedef std::tuple<
     CState,
     CShape,
     CCollision,
-    CText
+    CText,
+    CSprite
 > ComponentTuple;
 
 class Entity

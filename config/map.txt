@@ -1,0 +1,2 @@
+TILEMAP 6 0 0 0 true
+TILEMAP 2 0 1 2 true

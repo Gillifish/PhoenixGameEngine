@@ -12,8 +12,10 @@ TestGame::TestGame(GameEngine *gameEngine)
 
 void TestGame::init()
 {
-    m_map.setTexture(m_game->assets().getTexture("test_map"));
-    m_map.setOrigin(m_map.getLocalBounds().width / 2, m_map.getLocalBounds().height / 2);
+    m_tileWidth = 32;
+    m_tileHeight = 32;
+
+    m_tilemap = Tilemap("outside_ts", Vec2(32, 32), "config/map.txt");
 
     registerAction(sf::Keyboard::W, "UP");
     registerAction(sf::Keyboard::S, "DOWN");
@@ -21,26 +23,56 @@ void TestGame::init()
     registerAction(sf::Keyboard::D, "RIGHT");
     registerAction(sf::Keyboard::G, "DEBUG");
 
-    spawnPlayer();
-
-    m_map.setPosition(m_player->getComponent<CTransform>().pos.x, m_player->getComponent<CTransform>().pos.y);
+    bottomLayer();
+    middleLayer();
+    topLayer();
 
     m_camera.setSize(sf::Vector2f(960.0, 640.0f));
     m_camera.setCenter(m_player->getComponent<CTransform>().pos.x, m_player->getComponent<CTransform>().pos.x);
     m_camera.zoom(0.7);
-
-    m_game->window().setView(m_camera);
 }
 
-void TestGame::spawnPlayer()
+void TestGame::topLayer()
+{
+
+}
+
+void TestGame::middleLayer()
 {
     auto e = m_entityManager.addEntity("player");
-    e->addComponent<CTransform>().pos = Vec2(m_game->width() / 2, m_game->height() / 2);
+    e->addComponent<CTransform>().pos = gridToMidPixel(2, 2, 0, -8);
     e->addComponent<CState>("IDLE_DOWN");
     e->addComponent<CAnimation>(m_game->assets().getAnimation("IDLE_DOWN"), true);
     e->addComponent<CBoundingBox>(Vec2(32, 48));
 
     m_player = e;
+}
+
+void TestGame::bottomLayer()
+{
+    auto f1 = m_entityManager.addEntity("TILE");
+    f1->addComponent<CTransform>().pos = gridToMidPixel(3, 6);
+    f1->addComponent<CAnimation>(m_game->assets().getAnimation("FLOWER_1"), true);
+    f1->addComponent<CBoundingBox>(Vec2(32, 32));
+
+    auto f2 = m_entityManager.addEntity("TILE");
+    f2->addComponent<CTransform>().pos = gridToMidPixel(4, 6);
+    f2->addComponent<CAnimation>(m_game->assets().getAnimation("FLOWER_2"), true);
+    f2->addComponent<CBoundingBox>(Vec2(32, 32));
+
+    for (auto tile : m_tilemap.getTileMap())
+    {
+        auto e = m_entityManager.addEntity(tile.tag);
+        e->addComponent<CSprite>();
+        auto &sprite = e->getComponent<CSprite>().sprite;
+        sprite.setTexture(m_game->assets().getTexture(m_tilemap.getTextureTag()));
+        Vec2 v(m_tilemap.gridToPixel(tile.textureX, tile.textureY));
+        sprite.setTextureRect(sf::IntRect(v.x, v.y, m_tilemap.getTileSize().x, m_tilemap.getTileSize().y));
+        sprite.setOrigin(m_tilemap.getTileSize().x / 2, m_tilemap.getTileSize().y / 2);
+
+        auto pos = gridToMidPixel(tile.renderX, tile.renderY);
+        sprite.setPosition(pos.x, pos.y);
+    }
 }
 
 void TestGame::update()
@@ -59,9 +91,6 @@ void TestGame::update()
 
 void TestGame::sMovement()
 {
-    // TODO: implement all entity movement in this function
-    //      you should read the m_player->cInput component to determine if the player is moving
-
     m_player->getComponent<CTransform>().velocity = {0.0, 0.0};
 
     // Implement player movement
@@ -90,6 +119,8 @@ void TestGame::sMovement()
         m_player->getComponent<CState>().state = "IDLE_DOWN";
     }
 
+    // Update all entities by their current velocity
+
     for (auto e : m_entityManager.getEntities())
     {
         e->getComponent<CTransform>().pos.x += e->getComponent<CTransform>().velocity.x;
@@ -101,6 +132,7 @@ void TestGame::sCamera()
 {
     auto pos = m_player->getComponent<CTransform>().pos;
     m_camera.setCenter(sf::Vector2f(pos.x, pos.y));
+    m_game->window().setView(m_camera);
 }
 
 void TestGame::sLifespan()
@@ -146,9 +178,11 @@ void TestGame::sAnimation()
 
 void TestGame::sRender()
 {
-    m_game->window().draw(m_map);
-
-    m_game->window().setView(m_camera);
+    //m_game->window().draw(m_map);
+    for (auto e : m_entityManager.getEntities("TILEMAP"))
+    {
+        m_game->window().draw(e->getComponent<CSprite>().sprite);
+    }
 
     for (auto e : m_entityManager.getEntities())
     {
@@ -238,4 +272,12 @@ void TestGame::sDoAction(const Action &action)
             m_player->getComponent<CInput>().right = false;
         }
     }
+}
+
+Vec2 TestGame::gridToMidPixel(float gridX, float gridY, float offsetX, float offsetY)
+{
+    float pixelX = gridX * m_tileWidth;
+    float pixelY = gridY * m_tileHeight;
+
+    return Vec2((pixelX + (m_tileWidth / 2)) + offsetX, (pixelY + (m_tileHeight / 2)) + offsetY);
 }

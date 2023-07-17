@@ -7,6 +7,9 @@ Texture      player_idle_left	assets/idle_left.png
 Texture      player_walk_right	assets/right.png
 Texture      player_idle_right  assets/idle_right.png
 Texture      test_map           maps/map.png
+Texture      flower_1           assets/flowers1.png
+Texture      flower_2           assets/flowers2.png
+Texture      outside_ts         assets/Outside.png
 
 Font         8-BIT-OP           fonts/8bitOperatorPlus-Regular.ttf
 
@@ -18,3 +21,5 @@ Animation    WALK_LEFT          player_walk_left    4   10
 Animation    IDLE_LEFT          player_idle_left    1   10
 Animation    WALK_RIGHT         player_walk_right   4   10
 Animation    IDLE_RIGHT         player_idle_right   1   10
+Animation    FLOWER_1           flower_1            5   10
+Animation    FLOWER_2           flower_2            5   10
