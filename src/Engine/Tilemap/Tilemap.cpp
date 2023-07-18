@@ -5,10 +5,10 @@ Tilemap::Tilemap(std::string texTag, Vec2 size, std::string filePath) :
     m_tileSize(size),
     m_mapFilePath(filePath)
 {
-    loadMap();
+    loadMapFile();
 }
 
-void Tilemap::loadMap()
+void Tilemap::loadMapFile()
 {
     std::filesystem::path currentDir = std::filesystem::current_path();
     auto path = currentDir.string() + "/" + m_mapFilePath;
@@ -37,6 +37,41 @@ void Tilemap::loadMap()
     }
 
     inputFile.close();
+}
+
+void Tilemap::loadMap(EntityManager &eManager, Assets &assets)
+{
+    for (auto tile : getTileMap())
+    {
+        auto e = eManager.addEntity(tile.tag);
+        e->addComponent<CSprite>();
+        auto &sprite = e->getComponent<CSprite>().sprite;
+        sprite.setTexture(assets.getTexture(getTextureTag()));
+        Vec2 v(gridToPixel(tile.textureX, tile.textureY));
+        sprite.setTextureRect(sf::IntRect(v.x, v.y, getTileSize().x, getTileSize().y));
+        sprite.setOrigin(getTileSize().x / 2, getTileSize().y / 2);
+
+        auto pos = gridToMidPixel(tile.renderX, tile.renderY);
+        sprite.setPosition(pos.x, pos.y);
+    }
+}
+
+void Tilemap::render(EntityManager &eManager, sf::RenderWindow &window)
+{
+    for (auto e : eManager.getEntities("TILEMAP"))
+    {
+        window.draw(e->getComponent<CSprite>().sprite);
+    }
+}
+
+void Tilemap::setTexturePath(std::string &path)
+{
+    m_mapFilePath = path;
+}
+
+void Tilemap::setTileTag(std::string &tag)
+{
+    m_tileTag = tag;
 }
 
 Vec2 Tilemap::getTileSize()

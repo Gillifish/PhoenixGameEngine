@@ -31,18 +31,19 @@ class Tilemap
     
     void setTexturePath(std::string &path);
     void setTileTag(std::string &tag);
-    void loadMap();
+    void loadMapFile();
 
 
 public:
     Tilemap() = default;
     Tilemap(std::string texTag, Vec2 size, std::string path);
 
+    void loadMap(EntityManager &eManager, Assets &assets);
+    void render(EntityManager &eManager, sf::RenderWindow &window);
     Vec2 getTileSize();
     TileMap getTileMap();
     std::string getTextureTag();
     std::string getTileTag();
     Vec2 gridToPixel(float gridX, float gridY);
     Vec2 gridToMidPixel(float gridX, float gridY);
-
 };

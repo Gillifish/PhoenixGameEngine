@@ -60,19 +60,7 @@ void TestGame::bottomLayer()
     f2->addComponent<CAnimation>(m_game->assets().getAnimation("FLOWER_2"), true);
     f2->addComponent<CBoundingBox>(Vec2(32, 32));
 
-    for (auto tile : m_tilemap.getTileMap())
-    {
-        auto e = m_entityManager.addEntity(tile.tag);
-        e->addComponent<CSprite>();
-        auto &sprite = e->getComponent<CSprite>().sprite;
-        sprite.setTexture(m_game->assets().getTexture(m_tilemap.getTextureTag()));
-        Vec2 v(m_tilemap.gridToPixel(tile.textureX, tile.textureY));
-        sprite.setTextureRect(sf::IntRect(v.x, v.y, m_tilemap.getTileSize().x, m_tilemap.getTileSize().y));
-        sprite.setOrigin(m_tilemap.getTileSize().x / 2, m_tilemap.getTileSize().y / 2);
-
-        auto pos = gridToMidPixel(tile.renderX, tile.renderY);
-        sprite.setPosition(pos.x, pos.y);
-    }
+    m_tilemap.loadMap(m_entityManager, m_game->assets());
 }
 
 void TestGame::update()
@@ -179,10 +167,12 @@ void TestGame::sAnimation()
 void TestGame::sRender()
 {
     //m_game->window().draw(m_map);
-    for (auto e : m_entityManager.getEntities("TILEMAP"))
+    /*for (auto e : m_entityManager.getEntities("TILEMAP"))
     {
         m_game->window().draw(e->getComponent<CSprite>().sprite);
-    }
+    }*/
+
+    m_tilemap.render(m_entityManager, m_game->window());
 
     for (auto e : m_entityManager.getEntities())
     {
