@@ -67,7 +67,6 @@ void Intro::sLifespan()
 
     if (m_currentFrame > 1260)
     {
-        showText1 = false;
         showText2 = false;
         showText3 = true;
     }
