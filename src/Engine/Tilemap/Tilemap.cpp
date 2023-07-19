@@ -33,7 +33,7 @@ void Tilemap::loadMapFile()
         iss >> tile.renderY;
         iss >> tile.collision;
 
-        m_tMap.push_back(tile);
+        m_tVec.push_back(tile);
     }
 
     inputFile.close();
@@ -41,7 +41,7 @@ void Tilemap::loadMapFile()
 
 void Tilemap::loadMap(EntityManager &eManager, Assets &assets)
 {
-    for (auto tile : getTileMap())
+    for (auto tile : getTileVector())
     {
         auto e = eManager.addEntity(tile.tag);
         e->addComponent<CSprite>();
@@ -79,9 +79,9 @@ Vec2 Tilemap::getTileSize()
     return m_tileSize;
 }
 
-TileMap Tilemap::getTileMap()
+TileVec Tilemap::getTileVector()
 {
-    return m_tMap;
+    return m_tVec;
 }
 
 std::string Tilemap::getTileTag()

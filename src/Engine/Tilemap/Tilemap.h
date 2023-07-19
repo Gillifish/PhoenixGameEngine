@@ -18,7 +18,7 @@ struct Tile
     bool collision = false;
 };
 
-typedef std::vector<Tile> TileMap;
+typedef std::vector<Tile> TileVec;
 
 class Tilemap
 {
@@ -27,7 +27,7 @@ class Tilemap
     std::string m_mapFilePath = "";
     std::string m_texTag = "none";
     std::string m_tileTag = "TILEMAP";
-    TileMap m_tMap;
+    TileVec m_tVec;
     
     void setTexturePath(std::string &path);
     void setTileTag(std::string &tag);
@@ -41,7 +41,7 @@ public:
     void loadMap(EntityManager &eManager, Assets &assets);
     void render(EntityManager &eManager, sf::RenderWindow &window);
     Vec2 getTileSize();
-    TileMap getTileMap();
+    TileVec getTileVector();
     std::string getTextureTag();
     std::string getTileTag();
     Vec2 gridToPixel(float gridX, float gridY);
