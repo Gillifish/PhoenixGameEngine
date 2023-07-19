@@ -15,7 +15,6 @@ class TestGame : public Scene
     sf::View m_camera;
     float m_tileWidth;
     float m_tileHeight;
-    sf::Sprite m_map;
     Tilemap m_tilemap;
 
     void init();

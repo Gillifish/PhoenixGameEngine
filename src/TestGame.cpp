@@ -44,6 +44,7 @@ void TestGame::middleLayer()
     e->addComponent<CState>("IDLE_DOWN");
     e->addComponent<CAnimation>(m_game->assets().getAnimation("IDLE_DOWN"), true);
     e->addComponent<CBoundingBox>(Vec2(32, 48));
+    e->addComponent<CDirection2D>(Direction::DOWN);
 
     m_player = e;
 }
@@ -81,30 +82,48 @@ void TestGame::sMovement()
 {
     m_player->getComponent<CTransform>().velocity = {0.0, 0.0};
 
+    Direction playerDir = m_player->getComponent<CDirection2D>().direction;
+
     // Implement player movement
     if (m_player->getComponent<CInput>().up)
     {
         m_player->getComponent<CTransform>().velocity.y = -3;
         m_player->getComponent<CState>().state = "WALK_UP";
+        m_player->getComponent<CDirection2D>().direction = Direction::UP;
     }
     else if (m_player->getComponent<CInput>().down)
     {
         m_player->getComponent<CTransform>().velocity.y = 3;
         m_player->getComponent<CState>().state = "WALK_DOWN";
+        m_player->getComponent<CDirection2D>().direction = Direction::DOWN;
     }
     else if (m_player->getComponent<CInput>().left)
     {
         m_player->getComponent<CTransform>().velocity.x = -3;
         m_player->getComponent<CState>().state = "WALK_LEFT";
+        m_player->getComponent<CDirection2D>().direction = Direction::LEFT;
     }
     else if (m_player->getComponent<CInput>().right)
     {
         m_player->getComponent<CTransform>().velocity.x = 3;
         m_player->getComponent<CState>().state = "WALK_RIGHT";
+        m_player->getComponent<CDirection2D>().direction = Direction::RIGHT;
     }
-    else if (m_player->getComponent<CTransform>().velocity == Vec2(0.0f, 0.0f))
+    else if (m_player->getComponent<CTransform>().velocity == Vec2(0.0f, 0.0f) && playerDir == Direction::UP)
+    {
+        m_player->getComponent<CState>().state = "IDLE_UP";
+    }
+    else if (m_player->getComponent<CTransform>().velocity == Vec2(0.0f, 0.0f) && playerDir == Direction::DOWN)
     {
         m_player->getComponent<CState>().state = "IDLE_DOWN";
+    }
+    else if (m_player->getComponent<CTransform>().velocity == Vec2(0.0f, 0.0f) && playerDir == Direction::LEFT)
+    {
+        m_player->getComponent<CState>().state = "IDLE_LEFT";
+    }
+    else if (m_player->getComponent<CTransform>().velocity == Vec2(0.0f, 0.0f) && playerDir == Direction::RIGHT)
+    {
+        m_player->getComponent<CState>().state = "IDLE_RIGHT";
     }
 
     // Update all entities by their current velocity
@@ -133,9 +152,24 @@ void TestGame::sCollision()
 
 void TestGame::sAnimation()
 {
+    if (m_player->getComponent<CState>().state == "IDLE_UP" && m_player->getComponent<CAnimation>().animation.getName() != "IDLE_UP")
+    {
+        m_player->addComponent<CAnimation>(m_game->assets().getAnimation("IDLE_UP"));
+    }
+
     if (m_player->getComponent<CState>().state == "IDLE_DOWN" && m_player->getComponent<CAnimation>().animation.getName() != "IDLE_DOWN")
     {
         m_player->addComponent<CAnimation>(m_game->assets().getAnimation("IDLE_DOWN"));
+    }
+
+    if (m_player->getComponent<CState>().state == "IDLE_LEFT" && m_player->getComponent<CAnimation>().animation.getName() != "IDLE_LEFT")
+    {
+        m_player->addComponent<CAnimation>(m_game->assets().getAnimation("IDLE_LEFT"));
+    }
+
+    if (m_player->getComponent<CState>().state == "IDLE_RIGHT" && m_player->getComponent<CAnimation>().animation.getName() != "IDLE_RIGHT")
+    {
+        m_player->addComponent<CAnimation>(m_game->assets().getAnimation("IDLE_RIGHT"));
     }
 
     if (m_player->getComponent<CState>().state == "WALK_UP" && m_player->getComponent<CAnimation>().animation.getName() != "WALK_UP")
@@ -166,12 +200,6 @@ void TestGame::sAnimation()
 
 void TestGame::sRender()
 {
-    //m_game->window().draw(m_map);
-    /*for (auto e : m_entityManager.getEntities("TILEMAP"))
-    {
-        m_game->window().draw(e->getComponent<CSprite>().sprite);
-    }*/
-
     m_tilemap.render(m_entityManager, m_game->window());
 
     for (auto e : m_entityManager.getEntities())

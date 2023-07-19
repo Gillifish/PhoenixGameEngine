@@ -159,3 +159,20 @@ public:
 
     CSprite() {}
 };
+
+enum Direction
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
+class CDirection2D : public Component
+{
+public:
+    Direction direction;
+
+    CDirection2D() {}
+    CDirection2D(Direction d) : direction(d) {}
+};
