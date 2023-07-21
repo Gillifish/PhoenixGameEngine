@@ -1,30 +1,16 @@
-cmake_minimum_required(VERSION 3.0)
-project(YourProjectName)
-
-# Set the C++ standard
-set(CMAKE_CXX_STANDARD 17)
-
-# Add your source files
-set(SOURCES
-    src/main.cpp
-    src/foo.cpp
-    src/bar.cpp
+cmake_minimum_required(VERSION 3.15)
+project(example
+  LANGUAGES CXX
+  VERSION 1.0
 )
 
-# Add your header files
-set(HEADERS
-    include/foo.h
-    include/bar.h
+set(CMAKE_CXX_STANDARD 20)
+
+add_subdirectory(src)
+add_subdirectory(dependencies)
+
+target_include_directories(main PRIVATE src
+                                        src/Engine
 )
 
-# Add the executable target
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-
-# Set additional compiler flags (optional)
-# For example, to enable warnings:
-# target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra)
-target_compile_options(${PROJECT_NAME} PRIVATE -std=c++17 -I/opt/homebrew/include -L/opt/homebrew/lib -lsfml-graphics -lsfml-window -lsfml-system)
-
-# Specify include directories (optional)
-# For example, if your headers are in the "include" directory:
-# target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_link_libraries(main PRIVATE sfml-window sfml-graphics sfml-system sfml-audio ImGui-SFML::ImGui-SFML)

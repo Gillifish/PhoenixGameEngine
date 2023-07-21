@@ -1,4 +1,6 @@
 #include "TestGame.h"
+#include <imgui-SFML.h>
+#include <imgui.h>
 
 TestGame::TestGame(GameEngine *gameEngine)
     : Scene(gameEngine)
@@ -222,6 +224,8 @@ void TestGame::sRender()
             m_game->window().draw(bBox.rect);
         }
     }
+
+    ImGui::ShowDemoWindow();
 }
 
 void TestGame::onEnd()

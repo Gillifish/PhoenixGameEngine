@@ -2,6 +2,8 @@
 #include "Engine/Scene/Scene_Play.h"
 #include "TestGame.h"
 #include "Intro.h"
+#include <imgui-SFML.h>
+#include <imgui.h>
 
 #include <iostream>
 
@@ -16,6 +18,7 @@ void GameEngine::init(const std::string &path)
 
     m_window.create(sf::VideoMode(1200, 768), "Phoenix Engine");
     m_window.setFramerateLimit(60);
+    ImGui::SFML::Init(m_window);
 
     changeScene("INTRO", std::make_shared<Intro>(this));
 }
@@ -54,12 +57,16 @@ void GameEngine::run()
     {
         m_window.clear(m_background);
         update();
+        ImGui::SFML::Render(m_window);
         m_window.display();
     }
+
+    ImGui::SFML::Shutdown();
 }
 
 void GameEngine::update()
 {
+    ImGui::SFML::Update(m_window, deltaClock.restart());
     currentScene()->update();
     sUserInput();
 }
@@ -69,6 +76,8 @@ void GameEngine::sUserInput()
     sf::Event event;
     while (m_window.pollEvent(event))
     {
+        ImGui::SFML::ProcessEvent(event);
+
         if(event.type == sf::Event::Closed)
         {
             quit();

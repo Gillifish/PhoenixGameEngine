@@ -6,6 +6,7 @@
 #include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Scene_Play.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Clock.hpp>
 
 struct GameConfig
 {
@@ -27,6 +28,7 @@ protected:
     size_t m_simulationSpeed = 1;
     bool m_running = true;
     sf::Color m_background = {0, 0, 0};
+    sf::Clock deltaClock;
 
     void init(const std::string &path);
     void update();
