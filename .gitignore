@@ -1,4 +1,5 @@
 build
+configure.sh
 compile.sh
 run.sh
 .vscode
