@@ -11,4 +11,5 @@ add_executable(main main.cpp
                     Engine/Action/Action.cpp
                     Engine/Physics/Physics.cpp
                     Engine/Scene/Scene.cpp
+                    Engine/LevelEditor/Editor.cpp
 )
