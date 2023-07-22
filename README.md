@@ -9,6 +9,7 @@ A game engine I am learning how to create using lectures from Dave Churchill on 
 First, create a folder called "build" in your project directory.
 Then create a bash script called "configure.sh" with these lines:
 > cd build
+
 > cmake ..
 
 Second, create a bash script called "compile.sh" with these lines:
