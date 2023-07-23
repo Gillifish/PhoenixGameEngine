@@ -29,4 +29,4 @@ with:
 
 > cmake -DBUILD_SHARED_LIBS=OFF ..
 
-Then find the "open32al.dll" file once you have ran the "compile.sh" script and add it to the build/src/Debug file where your EXE file lives.
+Then find the "open32al.dll" from your "_deps" folder once you have ran the "compile.sh" script and add it to the build/src/Debug file where your EXE file lives.
