@@ -1,6 +1,6 @@
 include(FetchContent)
 
-set(SFML_VERSION "2.6.0")
+set(SFML_VERSION "2.6.1")
 
 FetchContent_Declare(
   sfml

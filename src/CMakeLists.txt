@@ -1,6 +1,7 @@
 add_executable(main main.cpp
                     Intro.cpp
                     TestGame.cpp
+                    ExampleScene.cpp
                     Engine/Game/GameEngine.cpp
                     Engine/Game/Assets.cpp
                     Engine/Vec2/Vec2.cpp

@@ -1,7 +1,6 @@
 #include "GameEngine.h"
 #include "Engine/Scene/Scene_Play.h"
-#include "TestGame.h"
-#include "Intro.h"
+#include "ExampleScene.h"
 #include <imgui-SFML.h>
 #include <imgui.h>
 
@@ -20,7 +19,7 @@ void GameEngine::init(const std::string &path)
     m_window.setFramerateLimit(60);
     ImGui::SFML::Init(m_window);
 
-    changeScene("INTRO", std::make_shared<Intro>(this));
+    changeScene("EXAMPLESCENE", std::make_shared<ExampleScene>(this));
 }
 
 std::shared_ptr<Scene> GameEngine::currentScene()
